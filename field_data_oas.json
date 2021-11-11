@@ -1,0 +1,1435 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "field_data API",
+    "description": "API specification for the field_data service template",
+    "version": "0.3.4"
+  },
+  "tags": [
+    {
+      "name": "Base Field Operations"
+    },
+    {
+      "name": "Crop Information"
+    },
+    {
+      "name": "Driving Path"
+    },
+    {
+      "name": "Application Results"
+    },
+    {
+      "name": "Subscriptions"
+    }
+  ],
+  "paths": {
+    "/groups": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Base Field Operations"
+        ],
+        "summary": "List groups (list_groups)",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Group"
+                  },
+                  "example": [
+                    {
+                      "id": "68C13D4F-55CC-45A4-A20F-3167941A52E7",
+                      "name": "annual crops"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fields": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Base Field Operations"
+        ],
+        "summary": "List fields (list_fields)",
+        "parameters": [
+          {
+            "description": "id of a group for which the fields are to be listed",
+            "name": "group_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Field"
+                  },
+                  "example": [
+                    {
+                      "id": "urn:com.agricircle.atlas.field_data:FDBE6F55-6179-4B88-9177-4AFBED33ADAC",
+                      "name": "field by the pond",
+                      "boundaries": {
+                        "type": "Polygon",
+                        "coordinates": [
+                          [
+                            [
+                              8.475152850151062,
+                              47.47213709091847
+                            ],
+                            [
+                              8.475152850151062,
+                              47.47213709091847
+                            ],
+                            [
+                              8.475104570388794,
+                              47.47222049049008
+                            ],
+                            [
+                              8.475152850151062,
+                              47.47213709091847
+                            ]
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or missing parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fields/{urn}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Base Field Operations"
+        ],
+        "summary": "Retrieve base information for a field (get_field_info)",
+        "parameters": [
+          {
+            "name": "urn",
+            "description": "the URN (urn:<service_id>:<internal_id>) of a field",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/FieldURN"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Field"
+                },
+                "example": {
+                  "urn": "urn:com.agricircle.atlas.field_data:FDBE6F55-6179-4B88-9177-4AFBED33ADAC",
+                  "name": "field by the pond",
+                  "boundaries": {
+                    "type": "Polygon",
+                    "coordinates": [
+                      [
+                        [
+                          8.475152850151062,
+                          47.47213709091847
+                        ],
+                        [
+                          8.475152850151062,
+                          47.47213709091847
+                        ],
+                        [
+                          8.475104570388794,
+                          47.47222049049008
+                        ],
+                        [
+                          8.475152850151062,
+                          47.47213709091847
+                        ]
+                      ]
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The field was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fields/{urn}/driving_path": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Driving Path"
+        ],
+        "summary": "Retrieve driving path information for field (get_driving_path)",
+        "parameters": [
+          {
+            "description": "the URN (urn:<service_id>:<internal_id>) of a field",
+            "name": "urn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/FieldURN"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ab_line": {
+                      "description": "GeoJSON line with 2 points",
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "LineString"
+                          ],
+                          "description": "Always 'LineString'"
+                        },
+                        "coordinates": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "number",
+                              "minItems": 2,
+                              "maxItems": 2
+                            },
+                            "minItems": 2,
+                            "maxItems": 2
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "ab_line": {
+                      "type": "LineString",
+                      "coordinates": [
+                        [
+                          8.475152850151062,
+                          47.47213709091847
+                        ],
+                        [
+                          8.475152850151062,
+                          47.47213709091847
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No driving path is configured"
+          },
+          "401": {
+            "description": "Invalid or missing credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The field was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fields/{urn}/crops": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Crop Information"
+        ],
+        "summary": "Returns information on crops over time in the field (get_crop_history)",
+        "parameters": [
+          {
+            "description": "the URN (urn:<service_id>:<internal_id>) of a field",
+            "name": "urn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/FieldURN"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CropArray"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The field was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fields/{urn}/crops/{date}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Crop Information"
+        ],
+        "summary": "Returns detailed information on the active crop at the given date (get_crop_details)",
+        "parameters": [
+          {
+            "description": "the URN (urn:<service_id>:<internal_id>) of a field",
+            "name": "urn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/FieldURN"
+            }
+          },
+          {
+            "description": "ISO 8601 date for which crop details are requested",
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CropDetails"
+                  }
+                },
+                "example": [
+                  {
+                    "id": "1.1.1.1",
+                    "name": "Winter wheat",
+                    "season_start_date": "2021-04-23"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The field was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fields/{urn}/application_results": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Application Results"
+        ],
+        "summary": "Retrieve field application results of a given type (get_application_results)",
+        "parameters": [
+          {
+            "description": "the URN (urn:<service_id>:<internal_id>) of a field",
+            "name": "urn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/FieldURN"
+            }
+          },
+          {
+            "description": "the type of application that generated the results",
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ApplicationType"
+            }
+          },
+          {
+            "description": "ISO 8601 UTC date/time from which to retrieve application results",
+            "name": "date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2021-04-23T18:00:00Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationResults"
+                },
+                "example": [
+                  {
+                    "date": "2021-04-23T18:25:43.511Z",
+                    "application_type": "fertilization",
+                    "application_info": {
+                      "data_layers": [
+                        "N",
+                        "P2O5",
+                        "K2O"
+                      ],
+                      "product": {
+                        "name": "some product",
+                        "unit": "kg",
+                        "amount": 3243,
+                        "nutrients": {
+                          "N": 200,
+                          "P2O5": 50,
+                          "K2O": 5,
+                          "Mg": 3.5
+                        }
+                      }
+                    },
+                    "download_url": "https://atlas_participant.com/fields/B9C44906-250F-445F-99FC-42A182806649.gpkg"
+                  },
+                  {
+                    "date": "2021-04-23T22:00:00.000Z",
+                    "application_type": "irrigation",
+                    "application_info": {
+                    },
+                    "download_url": "https://atlas_participant.com/fields/70CA5EA6-BD0C-4467-ACB9-903C6B55F7FD.gpkg"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The field was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Application Results"
+        ],
+        "summary": "Adds an application result on a field (add_application_result)",
+        "parameters": [
+          {
+            "description": "the URN (urn:<service_id>:<internal_id>) of a field",
+            "name": "urn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/FieldURN"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "application parameters",
+          "content": {
+            "application/geopackage+sqlite3": {
+              "schema": {
+                "type": "string",
+                "format": "byte",
+                "description": "base64 encoded type-specific GeoPackage (see detailed specifications for specific conventions)",
+                "example": "<base64 encoded GeoPackage>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "application result uploaded"
+          },
+          "400": {
+            "description": "Invalid or missing parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The field was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "Registers a notification URL that will be invoked whenever changes occurs in fields (subscribe).",
+        "operationId": "subscribe",
+        "requestBody": {
+          "description": "subscription parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "notification_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A subscription's notification_url is invoked with a POST (WITHOUT Authorization headers), containing a Notification request body (see schema below)"
+                  }
+                },
+                "required": [
+                  "notification_url"
+                ],
+                "example": {
+                  "notification_url": "https://acme.com/my_notification_handler"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "subscription created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "the service-generated id for the new subscription"
+                    },
+                    "expiration_date": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "date at which the subscription expires (auto-delete)"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "550ef2f0-02b6-40b2-bed9-e20816d20255",
+                  "expiration_date": "2021-05-23T18:25:43.511Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or missing parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                },
+                "example": {
+                  "message": "A subscription already exists for this notification_url",
+                  "errors": [
+                    "550ef2f0-02b6-40b2-bed9-e20816d20255"
+                  ]
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                },
+                "example": "A subscription 550ef2f0-02b6-40b2-bed9-e20816d20255 already exists for this notification_url"
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/{id}": {
+      "patch": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "Refreshes an existing subscription (refresh_subscription)",
+        "operationId": "refresh_subscription",
+        "parameters": [
+          {
+            "description": "the id of a subscription",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "expiration_date": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "ISO 8601 UTC date/time at which the subscription expires (auto-delete)"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "550ef2f0-02b6-40b2-bed9-e20816d20255",
+                  "expiration_date": "2021-06-23T18:25:43.511Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or missing parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The subscription was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "The subscription is expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "Cancels a previously created subscription (unsubscribe)",
+        "operationId": "unsubscribe",
+        "parameters": [
+          {
+            "description": "the id of a subscription",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "Invalid or missing credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The subscription was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Group": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "group id"
+          },
+          "name": {
+            "type": "string",
+            "description": "Group name"
+          }
+        }
+      },
+      "Field": {
+        "type": "object",
+        "properties": {
+          "urn": {
+            "$ref": "#/components/schemas/FieldURN"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human readable name for a field"
+          },
+          "archived": {
+            "type": "boolean",
+            "default": false,
+            "description": "Optional. If true, the  information can be retrieved but the field should not be used for new operations"
+          },
+          "boundaries": {
+            "description": "GeoJSON boundaries (polygon with holes)",
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "Polygon"
+                ],
+                "description": "Always 'Polygon'"
+              },
+              "coordinates": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "description": "Must have  2 items for lat/long or 3 items for lat/long/elevation"
+                  },
+                  "description": "First element is outer boundary, optional addition elements are holes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Crop": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "unique identifier"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human readable name for a crop"
+          },
+          "season_start_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Season start date for the crop (e.g. last harvest date)"
+          }
+        },
+        "example": {
+          "id": "1.1.1.1",
+          "name": "Winter wheat",
+          "season_start_date": "2021-07-23"
+        }
+      },
+      "CropArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Crop"
+        },
+        "example": [
+          {
+            "id": "1.1.1.2",
+            "name": "Spring wheat",
+            "season_start_date": "2020-03-05"
+          },
+          {
+            "id": "1.1.1.1",
+            "name": "Winter wheat",
+            "season_start_date": "2021-09-23"
+          }
+        ]
+      },
+      "CropDetails": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Crop"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "layout": {
+                "description": "GeoJSON MultiPoligon representing the seedable areas of the field, such as vineyard rows, individual trees, etc.",
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "MultiPolygon"
+                    ],
+                    "description": "Always 'MultiPolygon'"
+                  },
+                  "coordinates": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "description": "Must have  2 items for lat/long or 3 items for lat/long/elevation"
+                        },
+                        "description": "First element is outer boundary, optional addition elements are holes"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ApplicationType": {
+        "type": "string",
+        "enum": [
+          "fertilization",
+          "irrigation",
+          "crop_protection",
+          "harvesting",
+          "other"
+        ]
+      },
+      "FieldURN": {
+        "type": "string",
+        "pattern": "^urn:[a-z][a-z0-9_.\\-]*:[\\w-.]+",
+        "description": "Uniform resource name of a field with the syntax `urn:<service_id>:<internal_id>`. <service_id> must be the id of a valid and active ATLAS service"
+      },
+      "ApplicationResults": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string",
+              "format": "date-time",
+              "description": "ISO 8601 UTC date/time at which the application took place"
+            },
+            "type": {
+              "$ref": "#/components/schemas/ApplicationType"
+            },
+            "info": {
+              "type": "object",
+              "description": "Application-specific additional properties (see detailed specifications)"
+            },
+            "download_url": {
+              "type": "string",
+              "format": "uri",
+              "description": "url to download the application result GeoPackage file"
+            }
+          }
+        }
+      },
+      "Subscription": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "expiration_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 UTC date/time before which the subscription must be refreshed"
+          },
+          "notification_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "callback url where change notifications will be posted"
+          }
+        }
+      },
+      "Notification": {
+        "description": "Payload sent when invoking notification_url",
+        "type": "object",
+        "properties": {
+          "subscription_id": {
+            "type": "string",
+            "description": "the id of a subscription"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 UTC date/time at which the notification was originally triggered (regardless of retries)"
+          },
+          "urn": {
+            "type": "string",
+            "description": "the URN of the field (urn:<service_id>:<internal_id>)"
+          },
+          "event": {
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "DELETED",
+              "UPDATED"
+            ]
+          },
+          "changes": {
+            "description": "attribute group where a change occurred (only present when event=UPDATED)",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "base",
+                "crop",
+                "driving_path",
+                "applications"
+              ],
+              "example": "crop"
+            }
+          }
+        }
+      },
+      "SimpleError": {
+        "type": "string",
+        "description": "Plain text message (may be empty).",
+        "example": "optional error message"
+      },
+      "DetailedError": {
+        "type": "object",
+        "description": "This defines the structure of an error payload when one is present. Actual messages and additional error information content may change from one implementation to another",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "error description"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Additional detailed information"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "example": {
+          "message": "general error message",
+          "errors": [
+            "optional",
+            "additional",
+            "details"
+          ]
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
