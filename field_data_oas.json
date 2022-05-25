@@ -3,7 +3,7 @@
   "info": {
     "title": "field_data API",
     "description": "API specification for the field_data service template",
-    "version": "0.3.4"
+    "version": "0.3.5"
   },
   "tags": [
     {
@@ -1296,9 +1296,10 @@
         "type": "string",
         "enum": [
           "fertilization",
-          "irrigation",
           "crop_protection",
+          "irrigation",
           "harvesting",
+          "sowing",
           "other"
         ]
       },
