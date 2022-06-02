@@ -1,3 +1,3 @@
-# field_data
+# field_data service template
 
-the ATLAS field data service template
+![View Specifications](specifications.html)
