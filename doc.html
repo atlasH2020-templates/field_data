@@ -24,6 +24,7 @@ Abstract
 This document describes the specifications for field_data services whose purpose is to store and make accessible a number of shareworthy intrinsic attributes and properties of a farmer's fields to authorized ATLAS network consumers.
 </div>
 <h2>1 Introduction</h2>
+
 Field data is information that is relevant to a large number of services and platforms in the ATLAS network. Services implementing the field_data service template provide a reference storage (source of truth) from which other services and platforms may retrieve data or synchronize their data with.
 
 The field_data service template is designed with the idea that a single service instance is configured in all the services used by a farmer that require field information. Having a common field_data service for all farmer's services means that field information MAY be exchanged via a "field reference" (URI) rather than with the actual data and that shareable information can be managed at a single location and be available for all consumers.
