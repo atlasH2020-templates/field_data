@@ -20,12 +20,9 @@ Author(s)                           M. Caballero (5AgriCircle AG)</p>
 
 <p>Abstract
 
-This document describes the specifications for field_data
-services whose purpose is to store and make accessible a number
-of shareworthy intrinsic attributes and properties of a farmer's
-fields to authorized ATLAS network consumers.</p>
+This document describes the specifications for field_data services whose purpose is to store and make accessible a number of shareworthy intrinsic attributes and properties of a farmer's fields to authorized ATLAS network consumers.</p>
 
-<h2>1  Introduction</h2>
+<h2>1 Introduction</h2>
 Field data is information that is relevant to a large number
 of services and platforms in the ATLAS network. Services
 implementing the field_data service template provide a
@@ -42,7 +39,7 @@ reference" (URI) rather than with the actual data and that
 shareable information can be managed at a single location
 and be available for all consumers.
 
-<h2>2  Terminology</h2>
+<h2>2 Terminology</h2>
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
 "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",
@@ -58,7 +55,7 @@ service template". Instead, "field_data service" is
 equivalent to "a service implementing the field_data service
 template".
 
-<h2>3  Pre-requisites</h2>
+<h2>3 Pre-requisites</h2>
 
 A thorough understanding in the following is required for
 both service consumers or service implementors:
@@ -66,7 +63,7 @@ both service consumers or service implementors:
     - GeoJSON specifications (<a href="https://geojson.org/">https://geojson.org/</a>)
     - GeoPackage specifications (<a href="https://www.geopackage.org/">https://www.geopackage.org/</a>)
 
-<h2>4  field_data Use Scenarios</h2>
+<h2>4 field_data Use Scenarios</h2>
 
 The following sections describe some aspects of the use of
 field_data.  The examples were chosen to illustrate the
@@ -100,7 +97,7 @@ later time, a field_data service may be queried for
 nutrients applied from prior operations in order to adjust
 the new prescription.
 
-<h2>5  Service Template Functions</h2>
+<h2>5 Service Template API Overview</h2>
 
 This section provides a very high-level summary of the
 field_data functions:
@@ -147,10 +144,10 @@ tables:
 +--------------------------------------------+
 | logical operation name                     |
 +-------------+------------------------------+
-|      Inputs | URL parameters or            |
-|             | request body attributes      |
+|      Inputs | &lt;URL parameters or            |
+|             | request body attributes&gt;      |
 +-------------+------------------------------+
-|     Outputs | body attributes              |
+|     Outputs | &lt;body attributes&gt;              |
 +-------------+------------------------------+
 
 Only the most meaningful parameters are discussed in this
@@ -416,7 +413,7 @@ automatically cancelled.
 |     Outputs | none                         |
 +-------------+------------------------------+
 
-<h2>6  Data Formats</h2>
+<h2>6 Data Formats</h2>
 
 This section focuses on the description of binary (file)
 data formats. Please refer to the field_data OpenAPI
@@ -938,7 +935,7 @@ field_data services MUST store "other" application result
 GeoPackage files with only minimal generic validation.
 
 
-<h2>7  Access and Authentication</h2>
+<h2>7 Access and Authentication</h2>
 
 Farmers MUST have an account setup on a field_data service
 in order to authenticate and access API endpoints. The
@@ -958,7 +955,7 @@ service's authorization server MUST request the client's
 end-user consent at service pairing time in order to deliver
 an access token.
 
-<h2>8  Dynamic Behaviour</h2>
+<h2>8 Dynamic Behaviour</h2>
 
 The purpose of the diagrams in this section is to illustrate
 communication patterns, more complex than plain
