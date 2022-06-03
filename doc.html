@@ -1,11 +1,10 @@
 <html>
 <head>
     <style type="text/css">
-        body { font-family: courier; font-size:12px; white-space: pre-wrap; margin-left: 42px; width: 465px; }
+        body { font-family: courier; font-size:12px; margin-left: 42px; width: 465px; white-space: pre-line; }
         h2 { margin: 10px 0 0 -22px; font-size:12px; padding: 0 !important }
         table { font-size: 10px; margin-left: -22px; width: 450px; }
-        div.header { padding: 0; margin: 0 0 0 -22px }
-        div.abstract { padding: 0; margin: 0 0 0 -22px; white-space: normal; }
+        div.header { padding: 0; margin: 0 0 0 -22px; white-space: pre-wrap; }
     </style>
 </head>
 <body>
@@ -21,95 +20,54 @@ Author(s)                           M. Caballero (5AgriCircle AG)
 
 <h2>The "field_data" ATLAS Service Template</h2>
 
-<div class="abstract">
+<div style="margin-left: -22px;">
 Abstract
 
-This document describes the specifications for field_data
-services whose purpose is to store and make accessible a number
-of shareworthy intrinsic attributes and properties of a farmer's
-fields to authorized ATLAS network consumers.
+This document describes the specifications for field_data services whose purpose is to store and make accessible a number of shareworthy intrinsic attributes and properties of a farmer's fields to authorized ATLAS network consumers.
 </div>
 
 <h2>1 Introduction</h2>
-Field data is information that is relevant to a large number
-of services and platforms in the ATLAS network. Services
-implementing the field_data service template provide a
-reference storage (source of truth) from which other
-services and platforms may retrieve data or synchronize
-their data with.
+Field data is information that is relevant to a large number of services and platforms in the ATLAS network. Services implementing the field_data service template provide a reference storage (source of truth) from which other services and platforms may retrieve data or synchronize their data with.
 
-The field_data service template is designed with the idea
-that a single service instance is configured in all the
-services used by a farmer that require field information.
-Having a common field_data service for all farmer's services
-means that field information MAY be exchanged via a "field
-reference" (URI) rather than with the actual data and that
-shareable information can be managed at a single location
-and be available for all consumers.
+The field_data service template is designed with the idea that a single service instance is configured in all the services used by a farmer that require field information. Having a common field_data service for all farmer's services means that field information MAY be exchanged via a "field reference" (URI) rather than with the actual data and that shareable information can be managed at a single location and be available for all consumers.
 
 <h2>2 Terminology</h2>
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
-"SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",
-"NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document
-are to be interpreted as described in RFC 2119 and indicate
-requirement levels for compliant implementations.
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and indicate requirement levels for compliant implementations.
 
-The notation "[xxx]" (xxx in square brackets) is equivalent
-to "array of xxx".
+The notation "[xxx]" (xxx in square brackets) is equivalent to "array of xxx".
 
-When used alone, the term "field_data" refers to "field_data
-service template". Instead, "field_data service" is
-equivalent to "a service implementing the field_data service
-template".
+When used alone, the term "field_data" refers to "field_data service template". Instead, "field_data service" is equivalent to "a service implementing the field_data service template".
 
 <h2>3 Pre-requisites</h2>
 
-A thorough understanding in the following is required for
-both service consumers or service implementors:
+A thorough understanding in the following is required for both service consumers or service implementors:
 
     - GeoJSON specifications (<a href="https://geojson.org/">https://geojson.org/</a>)
     - GeoPackage specifications (<a href="https://www.geopackage.org/">https://www.geopackage.org/</a>)
 
 <h2>4 field_data Use Scenarios</h2>
 
-The following sections describe some aspects of the use of
-field_data.  The examples were chosen to illustrate the
-basic operation of applications using field_data, not to
-limit what field_data may be used for.
+The following sections describe some aspects of the use of field_data.  The examples were chosen to illustrate the basic operation of applications using field_data, not to limit what field_data may be used for.
 
 <h2>4.1 Field Synchronisation</h2>
 
-Farmers typically use several software platforms. It is
-often the case that a few of these platforms require
-information of field boundaries for their operations.
+Farmers typically use several software platforms. It is often the case that a few of these platforms require information of field boundaries for their operations.
 
-In ATLAS, field_data services provide a single source of
-truth for field information but most existing software
-require a local copy of the data.
+In ATLAS, field_data services provide a single source of truth for field information but most existing software require a local copy of the data.
 
-The field_data subscriptions enable the establishment of a
-simple data mirroring mechanism so that all participating
-farmer's systems may update their local mirror as soon as
-changes occur in a field_data service.
+The field_data subscriptions enable the establishment of a simple data mirroring mechanism so that all participating farmer's systems may update their local mirror as soon as changes occur in a field_data service.
 
 <h2>4.2 Soil Fertilisation</h2>
 
-As a fertilisation operation is performed on a field, the
-actual amounts of nutrients that have been applied
-(retrieved from the equipment) are updated on the field_data
-service.
+As a fertilisation operation is performed on a field, the actual amounts of nutrients that have been applied (retrieved from the equipment) are updated on the field_data service.
 
-When another soil fertilisation operation is planned at a
-later time, a field_data service may be queried for
-nutrients applied from prior operations in order to adjust
-the new prescription.
+When another soil fertilisation operation is planned at a later time, a field_data service may be queried for nutrients applied from prior operations in order to adjust the new prescription.
 
 <h2>5 Service Template API Overview</h2>
 
-This section provides a very high-level summary of the
-field_data functions:
-
+This section provides a very high-level summary of the field_data functions:
+<pre>
 Basic Endpoints
     List Fields
     Get Field Information
@@ -126,66 +84,38 @@ Subscription Management Endpoints
     Subscribe
     Refresh a Subscription
     Unsubscribe
+</pre>
+Note that there are no operations to update, create, delete fields. These operations are deliberately excluded from the field_data template.
 
-Note that there are no operations to update, create, delete
-fields. These operations are deliberately excluded from the
-field_data template.
+Implementations of field_data are responsible for providing end-user configuration and management tools in their proprietary user interface, such as import from a shapefile, boundary editing in the browser, … Any change generated by these tools must generate an appropriate notification to subscribers (see 5.5 Subscription Management Functions).
 
-Implementations of field_data are responsible for providing
-end-user configuration and management tools in their
-proprietary user interface, such as import from a shapefile,
-boundary editing in the browser, … Any change generated by
-these tools must generate an appropriate notification to
-subscribers (see 5.5 Subscription Management Functions).
+Fields SHALL NOT be deleted under any condition (by the implementation's management application) so that references held to this field by external consumers remain valid over time. When a field is no longer relevant for new operations, it's archived property will be set to "true". Important note: an archived field can never be modified, including changing its archived state.
 
-Fields SHALL NOT be deleted under any condition (by the
-implementation's management application) so that references
-held to this field by external consumers remain valid over
-time. When a field is no longer relevant for new operations,
-it's archived property will be set to "true". Important
-note: an archived field can never be modified, including
-changing its archived state.
-
-Within this section, operations are summarised with simple
-tables:
-
+Within this section, operations are summarised with simple tables:
+<pre>
 +--------------------------------------------+
 | logical operation name                     |
 +-------------+------------------------------+
-|      Inputs | &lt;URL parameters or            |
-|             | request body attributes&gt;      |
+|      Inputs | &lt;URL parameters or           |
+|             | request body attributes&gt;     |
 +-------------+------------------------------+
-|     Outputs | &lt;body attributes&gt;              |
+|     Outputs | &lt;body attributes&gt;            |
 +-------------+------------------------------+
+</pre>
+Only the most meaningful parameters are discussed in this document. Please refer to the OpenAPI specifications for full details.
 
-Only the most meaningful parameters are discussed in this
-document. Please refer to the OpenAPI specifications
-for full details.
-
-field_data services are not required to handle intense
-traffic from a single client, such as the one that may
-result from being directly invoked on user interface
-interactions in an FMIS, for instance. Implementors MAY
-generate a 429 TOO MANY REQUESTS error response if the rate
-of calls exceed some pre-defined quota. Clients requiring
-more intense field information are advised to implement a
-mirroring mechanism using the subscription functions, as
-outlined in 4.1 Field Synchronisation.
+field_data services are not required to handle intense traffic from a single client, such as the one that may result from being directly invoked on user interface interactions in an FMIS, for instance. Implementors MAY generate a 429 TOO MANY REQUESTS error response if the rate of calls exceed some pre-defined quota. Clients requiring more intense field information are advised to implement a mirroring mechanism using the subscription functions, as outlined in 4.1 Field Synchronisation.
 
 <h2>5.1	Basic Functions</h2>
 
-These operations return basic field information about a
-specific field or all fields in an account.
+These operations return basic field information about a specific field or all fields in an account.
 
-The basic field information includes the id, name and
-GeoJSON polygon boundary of a field. For detailed
-specifications, refer to the field_data OpenAPI
-specifications.
+The basic field information includes the id, name and GeoJSON polygon boundary of a field. For detailed specifications, refer to the field_data OpenAPI specifications.
 
 <h2>5.1.1 List Fields</h2>
 
 This function returns the list of all fields (base information only) in an account
-
+<pre>
 +--------------------------------------------+
 | list_fields                                |
 +-------------+------------------------------+
@@ -193,13 +123,13 @@ This function returns the list of all fields (base information only) in an accou
 +-------------+------------------------------+
 |     Outputs | [urn, field info]            |
 +-------------+------------------------------+
-
+</pre>
 Archived fields SHALL NOT be returned by list_fields.
 
 <h2>5.1.2	Get Field Information</h2>
 
 This function returns the base information of a specific field.
-
+<pre>
 +--------------------------------------------+
 | get_field_info                             |
 +-------------+------------------------------+
@@ -207,35 +137,21 @@ This function returns the base information of a specific field.
 +-------------+------------------------------+
 |     Outputs | id, urn, name, boundaries    |
 +-------------+------------------------------+
-
-Services MUST return information even when the field is
-archived.
+</pre>
+Services MUST return information even when the field is archived.
 
 A field urn MUST have the following format:
 
     urn:&lt;service_id&gt;:&lt;field_id&gt;
 
-where &lt;service_id&gt; is the ATLAS id of the field_data service
-on which the query was made. Field URNs are often passed as
-parameters to other types of services. These services must
-validate that the &lt;service_id&gt; in the URN matches a
-field_data service to which they are paired.
+where &lt;service_id&gt; is the ATLAS id of the field_data service on which the query was made. Field URNs are often passed as parameters to other types of services. These services must validate that the &lt;service_id&gt; in the URN matches a field_data service to which they are paired.
 
-Boundaries are defined as a GeoJSON polygon feature where
-the "holes" represent areas with driving restrictions
-(water, trees, fenced area, …). The coordinates MAY include
-elevation information relevant to drivability.
+Boundaries are defined as a GeoJSON polygon feature where the "holes" represent areas with driving restrictions (water, trees, fenced area, …). The coordinates MAY include elevation information relevant to drivability.
 
 <h2>5.1.3 List Groups</h2>
 
-This function returns the list of groups defined in an
-account. Fields may be arbitrarily grouped for convenience
-in a field_data service (i.e., annual crops, orchards,
-vineyards …) in order to optimize the queries for relevant
-fields. The group definition and configuration, if any,
-should be provided by the vendor's proprietary configuration
-and management tools.
-
+This function returns the list of groups defined in an account. Fields may be arbitrarily grouped for convenience in a field_data service (i.e., annual crops, orchards, vineyards ...) in order to optimize the queries for relevant fields. The group definition and configuration, if any, should be provided by the vendor's proprietary configuration and management tools.
+<pre>
 +--------------------------------------------+
 | list_groups                                |
 +-------------+------------------------------+
@@ -243,16 +159,15 @@ and management tools.
 +-------------+------------------------------+
 |     Outputs | [id, name, description]      |
 +-------------+------------------------------+
-
-A specific implementation may elect not to provide groups in
-which case they must simply return an empty array.
+</pre>
+A specific implementation may elect not to provide groups in which case they must simply return an empty array.
 
 <h2>5.2 Crop Information</h2>
 
 <h2>5.2.1 Get Crop History</h2>
 
 Returns information on crops over time in the field.
-
+<pre>
 +--------------------------------------------+
 | get_crop_history                           |
 +-------------+------------------------------+
@@ -260,15 +175,13 @@ Returns information on crops over time in the field.
 +-------------+------------------------------+
 |     Outputs | [crop details]               |
 +-------------+------------------------------+
+</pre>
+Services MUST return the history in chronological order (sorted by ascending dates)
 
-Services MUST return the history in chronological order
-(sorted by ascending dates)
-
- Crop history information MUST be immutable except for the
-most current item which may be edited.
+ Crop history information MUST be immutable except for the most current item which may be edited.
 
 <h2>5.2.2 Get Crop Details</h2>
-
+<pre>
 +--------------------------------------------+
 | get_crop_details                           |
 +-------------+------------------------------+
@@ -277,44 +190,29 @@ most current item which may be edited.
 |     Outputs | date, crop id, layout,       |
 |             | season_start_date            |
 +-------------+------------------------------+
+</pre>
+Services MUST return the crop information corresponding to the most recent information whose date is smaller or equal to the requested date.
 
-Services MUST return the crop information corresponding to
-the most recent information whose date is smaller or equal
-to the requested date.
+If no crop details are available, services MUST return 204 NO CONTENT.
 
-If no crop details are available, services MUST return
-204 NO CONTENT.
-
-If date is not specified, the current (latest) crop details
-are returned.
+If date is not specified, the current (latest) crop details are returned.
 
 If date is specified it MUST NOT be in the future.
 
-If no date match is found (date is older that oldest crop
-details), services MUST return 204 NO CONTENT.
+If no date match is found (date is older that oldest crop details), services MUST return 204 NO CONTENT.
 
-The crop layout represents the "seedable" areas of the
-field, such as vineyard rows, individual trees, etc. The
-coordinates MAY include elevation information relevant to
-the type of crop.
+The crop layout represents the "seedable" areas of the field, such as vineyard rows, individual trees, etc. The coordinates MAY include elevation information relevant to the type of crop.
 
-Crop layout, if present, MUST be fully contained within the
-field boundaries.
+Crop layout, if present, MUST be fully contained within the field boundaries.
 
-season_start_date is the date at which the latest crop
-season starts. When available, it MUST NOT be older than 9
-months from the current date. Otherwise, it MUST be omitted
-(even if an outdated value is available in the service).
+season_start_date is the date at which the latest crop season starts. When available, it MUST NOT be older than 9 months from the current date. Otherwise, it MUST be omitted (even if an outdated value is available in the service).
 
 <h2>5.3 Driving Path</h2>
 
 <h2>5.3.1 Get Driving Path</h2>
 
-Only "AB Line" are supported at the moment. By convention,
-the AB line must be aligned with the edge of a field
-boundary; it will be dynamically adjusted by the consumer to
-take the width of the attached implement into account.
-
+Only "AB Line" are supported at the moment. By convention, the AB line must be aligned with the edge of a field boundary; it will be dynamically adjusted by the consumer to take the width of the attached implement into account.
+<pre>
 +--------------------------------------------+
 | get_driving_path                           |
 +-------------+------------------------------+
@@ -323,31 +221,19 @@ take the width of the attached implement into account.
 |     Outputs | start point coordinates,     |
 |             | end point coordinates        |
 +-------------+------------------------------+
-
-If not driving path is defined or not supported, services
-MUST return 204 NO CONTENT error.
+</pre>
+If not driving path is defined or not supported, services MUST return 204 NO CONTENT error.
 
 <h2>5.4 Applications Results Functions</h2>
 
-Application results are operations that are performed on a
-field, yielding results in the form of application maps,
-that are necessary for reporting or as inputs for other
-services. At this time, field_data defines specific
-application results formats for "fertilization",
-"crop_protection", "irrigation", "harvesting" and "sowing".
-A general-purpose type "other" is available for types of
-applications that have not yet been formalized
-(see 6.1 Application Results File Formats).
+Application results are operations that are performed on a field, yielding results in the form of application maps, that are necessary for reporting or as inputs for other services. At this time, field_data defines specific application results formats for "fertilization", "crop_protection", "irrigation", "harvesting" and "sowing". A general-purpose type "other" is available for types of applications that have not yet been formalized (see 6.1 Application Results File Formats).
 
-The results of an application are always in GeoPackage
-format but with conventions that are specific to each
-application type.
+The results of an application are always in GeoPackage format but with conventions that are specific to each application type.
 
 <h2>5.4.1 Get Application Results</h2>
 
-Returns the information on specific nutrient amounts that
-have been applied to a field
-
+Returns the information on specific nutrient amounts that have been applied to a field
+<pre>
 +--------------------------------------------+
 | get_application_results                    |
 +-------------+------------------------------+
@@ -357,13 +243,13 @@ have been applied to a field
 |     Outputs | [date, application metadata, |
 |             |  gpkg download url]          |
 +-------------+------------------------------+
-
+</pre>
 <h2>5.4.2  Add Application Result</h2>
 
 Stores application data for resulting from a specific
 application type performed on a field. The applications are
 immutable and cannot be updated or deleted.
-
+<pre>
 +--------------------------------------------+
 | add_application_result                     |
 +-------------+------------------------------+
@@ -371,21 +257,15 @@ immutable and cannot be updated or deleted.
 +-------------+------------------------------+
 |     Outputs | none                         |
 +-------------+------------------------------+
-
-A field_data service MUST validate that gpkg (application
-result GeoPackage) is in valid format (see 6.1 Application
-Results File Formats.
+</pre>
+A field_data service MUST validate that gpkg (application result GeoPackage) is in valid format (see 6.1 Application Results File Formats.
 
 <h2>5.5 Subscription Management Functions</h2>
 
 <h2>5.5.1 Subscribe</h2>
 
-Registers a notification URL that will be invoked by the
-field service whenever information about a field is changed.
-Subscriptions may automatically expire after some time and
-must be explicitly refreshed by their creator to remain in
-the system.
-
+Registers a notification URL that will be invoked by the field service whenever information about a field is changed. Subscriptions may automatically expire after some time and must be explicitly refreshed by their creator to remain in the system.
+<pre>
 +--------------------------------------------+
 | subscribe                                  |
 +-------------+------------------------------+
@@ -394,12 +274,11 @@ the system.
 |     Outputs | Subscription id,             |
 |             | expiration date              |
 +-------------+------------------------------+
-
+</pre>
 <h2>5.5.2 Refresh a Subscription</h2>
 
-Refresh a subscription to prevent it from being
-automatically cancelled.
-
+Refresh a subscription to prevent it from being automatically cancelled.
+<pre>
 +--------------------------------------------+
 | refresh_subscription                       |
 +-------------+------------------------------+
@@ -407,12 +286,11 @@ automatically cancelled.
 +-------------+------------------------------+
 |     Outputs | expiration date              |
 +-------------+------------------------------+
-
+</pre>
 <h2>5.5.3 Unsubscribe</h2>
 
-Refresh a subscription to prevent it from being
-automatically cancelled.
-
+Refresh a subscription to prevent it from being automatically cancelled.
+<pre>
 +--------------------------------------------+
 | unsubscribe                                |
 +-------------+------------------------------+
@@ -420,19 +298,15 @@ automatically cancelled.
 +-------------+------------------------------+
 |     Outputs | none                         |
 +-------------+------------------------------+
-
+</pre>
 <h2>6 Data Formats</h2>
 
-This section focuses on the description of binary (file)
-data formats. Please refer to the field_data OpenAPI
-specifications for details on all other payload and
-parameter descriptions.
+This section focuses on the description of binary (file) data formats. Please refer to the field_data OpenAPI specifications for details on all other payload and parameter descriptions.
 
 <h2>6.1 Application Results File Formats</h2>
 
-Application result data MUST be in GeoPackage
-(<a href="https://www.geopackage.org/">https://www.geopackage.org/</a>) format version 1.2 or newer.
-
+Application result data MUST be in GeoPackage (<a href="https://www.geopackage.org/">https://www.geopackage.org/</a>) format version 1.2 or newer.
+<pre>
 +=========================================================+
 |                TABLE gpkg_contents                      |
 +=====+=============+=====================================+
@@ -446,10 +320,9 @@ Application result data MUST be in GeoPackage
 |     +-------------+-------------------------------------+
 |     | data_type   | "attributes"                        |
 +-----+-------------+-------------------------------------+
-
-All Atlas GeoPackage files MUST contain an attributes table
-named "atlas" with the following structure:
-
+</pre>
+All Atlas GeoPackage files MUST contain an attributes table named "atlas" with the following structure:
+<pre>
 +============================+
 |     TABLE atlas            |
 +================+===========+
@@ -460,9 +333,9 @@ named "atlas" with the following structure:
 | participant    | TEXT      |
 | format_version | TEXT      |
 +----------------+-----------+
-
+</pre>
 and a single row:
-
+<pre>
 +=========================================================+
 |                TABLE atlas                              |
 +=====+================+==================================+
@@ -476,30 +349,17 @@ and a single row:
 |     +----------------+----------------------------------+
 |     | format_version | "MAJOR.MINOR"                    |
 +-----+----------------+----------------------------------+
+</pre>
+Services SHALL validate that the "atlas.participant" field matches the information attached to the authentication context in which the file is uploaded.
 
-Services SHALL validate that the "atlas.participant" field
-matches the information attached to the authentication
-context in which the file is uploaded.
+If the GeoPackage was generated and uploaded by an Atlas Service, then "atlas.application" SHOULD be "&lt;service name&gt;-&lt;service version&gt;", otherwise it MAY contain "&lt;application name&gt;-&lt;application version&gt;". In either case, no validation will be performed.
 
-If the GeoPackage was generated and uploaded by an Atlas
-Service, then "atlas.application" SHOULD be
-"&lt;service name&gt;-&lt;service version&gt;", otherwise it MAY contain
-"&lt;application name&gt;-&lt;application version&gt;". In either case,
-no validation will be performed.
+The "atlas.format_version" field MUST be the version of the field_data template that is targeted by the client uploading the file. GeoPackage files of a given type are guaranteed to be compatible (no breaking changes) for a same MAJOR version of "atlas.format_version".
 
-The "atlas.format_version" field MUST be the version of the
-field_data template that is targeted by the client uploading
-the file. GeoPackage files of a given type are guaranteed to
-be compatible (no breaking changes) for a same MAJOR version
-of "atlas.format_version".
+field_data services MUST validate that the "atlas.type" column is equal to "application_result".
 
-field_data services MUST validate that the "atlas.type"
-column is equal to "application_result".
-
-By general convention, all application result GeoPackage
-files MUST contain an attributes table named
-"application_info" with the following structure:
-
+By general convention, all application result GeoPackage files MUST contain an attributes table named "application_info" with the following structure:
+<pre>
 +============================+
 |  TABLE application_info    |
 +================+===========+
@@ -510,9 +370,9 @@ files MUST contain an attributes table named
 | date           | DATETIME  |
 | info           | TEXT      |
 +----------------+-----------+
-
+</pre>
 and a single row:
-
+<pre>
 +=========================================================+
 |                TABLE application_info                   |
 +=====+=============+=====================================+
@@ -525,18 +385,13 @@ and a single row:
 |     +-------------+-------------------------------------+
 |     | info        | "&lt;type-specific info (JSON)&gt;"       |
 +-----+-------------+-------------------------------------+
-
-Additional application type-specific conventions, within the
-GeoPackage standard, are defined below. Service
-implementations MUST perform basic validity checks on
-submitted GeoPackage files to make sure they comply with the
-requirements of this section.
+</pre>
+Additional application type-specific conventions, within the GeoPackage standard, are defined below. Service implementations MUST perform basic validity checks on submitted GeoPackage files to make sure they comply with the requirements of this section.
 
 <h2>6.1.1 Fertilization Application Type</h2>
 
-In addition to the base tables, a fertilization application
-result GeoPackage MUST contain a product data table.
-
+In addition to the base tables, a fertilization application result GeoPackage MUST contain a product data table.
+<pre>
 +=========================================================+
 |                TABLE gpkg_contents                      |
 +=====+=============+=====================================+
@@ -548,10 +403,9 @@ result GeoPackage MUST contain a product data table.
 |     +-------------+-------------------------------------+
 |     | data_type   | "2d-gridded-coverage|features"      |
 +-----+-------------+-------------------------------------+
-
-If the data_type of the "product" table is "features", then
-the columns must be as follows:
-
+</pre>
+If the data_type of the "product" table is "features", then the columns must be as follows:
+<pre>
 +=========================================================+
 |                    TABLE product                        |
 +=====+=================+=================================+
@@ -563,10 +417,9 @@ the columns must be as follows:
 |     +-----------------+---------------------------------+
 |     | amount          | "amount in product units (REAL)"|
 +-----+-----------------+---------------------------------+
-
-Instead, if the data_type of the product table is
-"2d-gridded-coverage" then it must be defined as follows:
-
+</pre>
+Instead, if the data_type of the product table is "2d-gridded-coverage" then it must be defined as follows:
+<pre>
 +=========================================================+
 |                    TABLE product                        |
 +=====+=================+=================================+
@@ -582,16 +435,13 @@ Instead, if the data_type of the product table is
 |     +-----------------+---------------------------------+
 |     | tile_data       | "BLOB (TIFF)"                   |
 +-----+-----------------+---------------------------------+
+</pre>
+Where tile_data is a tiff blob holding Float32 values as per GeoPackage specifications.
 
-Where tile_data is a tiff blob holding Float32 values as per
-GeoPackage specifications.
+In either case, the product values are in the units specified in "application_info.info.product.unit".
 
-In either case, the product values are in the units
-specified in "application_info.info.product.unit".
-
-Fertilization "application_info.info" is a JSON object
-serialized as a string, such as:
-
+Fertilization "application_info.info" is a JSON object serialized as a string, such as:
+<pre>
 +-----------------------------------------------+
 | {                                             |
 |   "product": {                                |
@@ -607,19 +457,13 @@ serialized as a string, such as:
 |   "amount": &lt;amount_in_product_unit&gt;          |
 | }                                             |
 +-----------------------------------------------+
-
-The nutrient identifier (e.g., P2O5) are defined in the
-fertilisation_advisor service template. The "amount"
-attribute is the total amount of product that was applied on
-the entire field; it must match the sum of all values in the
-"product" table.
+</pre>
+The nutrient identifier (e.g., P2O5) are defined in the fertilisation_advisor service template. The "amount" attribute is the total amount of product that was applied on the entire field; it must match the sum of all values in the "product" table.
 
 <h2>6.1.2 Crop Protection Application Type</h2>
 
-In addition to the base tables, a crop protection
-application result GeoPackage MUST contain a product data
-table.
-
+In addition to the base tables, a crop protection application result GeoPackage MUST contain a product data table.
+<pre>
 +=========================================================+
 |                TABLE gpkg_contents                      |
 +=====+=============+=====================================+
@@ -631,10 +475,9 @@ table.
 |     +-------------+-------------------------------------+
 |     | data_type   | "2d-gridded-coverage|features"      |
 +-----+-------------+-------------------------------------+
-
-If the data_type of the "product" table is "features", then
-the columns must be as follows:
-
+</pre>
+If the data_type of the "product" table is "features", then the columns must be as follows:
+<pre>
 +=========================================================+
 |                    TABLE product                        |
 +=====+=================+=================================+
@@ -646,10 +489,10 @@ the columns must be as follows:
 |     +-----------------+---------------------------------+
 |     | amount          | "amount in product units (REAL)"|
 +-----+-----------------+---------------------------------+
-
+</pre>
 Instead, if the data_type of the product table is
 "2d-gridded-coverage" then it must be defined as follows:
-
+<pre>
 +=========================================================+
 |                    TABLE product                        |
 +=====+=================+=================================+
@@ -665,16 +508,13 @@ Instead, if the data_type of the product table is
 |     +-----------------+---------------------------------+
 |     | tile_data       | "BLOB (TIFF)"                   |
 +-----+-----------------+---------------------------------+
+</pre>
+Where tile_data is a tiff blob holding Float32 values as per GeoPackage specifications.
 
-Where tile_data is a tiff blob holding Float32 values as per
-GeoPackage specifications.
+In either case, the product values are in the units specified in "application_info.info.product.unit".
 
-In either case, the product values are in the units
-specified in "application_info.info.product.unit".
-
-Crop protection "application_info.info" is a JSON object
-serialized as a string, such as:
-
+Crop protection "application_info.info" is a JSON object serialized as a string, such as:
+<pre>
 +-----------------------------------------------+
 | {                                             |
 |   "product": {                                |
@@ -688,19 +528,13 @@ serialized as a string, such as:
 |   "amount": &lt;amount_in_product_unit&gt;          |
 | }                                             |
 +-----------------------------------------------+
-
-The substance identifier (e.g., 80-56-8) are defined in the
-crop_protection_advisor service template. The "amount"
-attribute is the total amount of product that was applied on
-the entire field; it must match the sum of all values in the
-"product" table.
+</pre>
+The substance identifier (e.g., 80-56-8) are defined in the crop_protection_advisor service template. The "amount" attribute is the total amount of product that was applied on the entire field; it must match the sum of all values in the "product" table.
 
 <h2>6.1.3 Irrigation Application Type</h2>
 
-In addition to the base tables, an irrigation application
-result GeoPackage MUST contain a water data table.
-
-
+In addition to the base tables, an irrigation application result GeoPackage MUST contain a water data table.
+<pre>
 +=========================================================+
 |                TABLE gpkg_contents                      |
 +=====+=============+=====================================+
@@ -712,10 +546,9 @@ result GeoPackage MUST contain a water data table.
 |     +-------------+-------------------------------------+
 |     | data_type   | "2d-gridded-coverage|features"      |
 +-----+-------------+-------------------------------------+
-
-If the data_type of the "water" table is "features", then
-the columns must be as follows:
-
+</pre>
+If the data_type of the "water" table is "features", then the columns must be as follows:
+<pre>
 +=========================================================+
 |                    TABLE water                          |
 +=====+=================+=================================+
@@ -727,10 +560,9 @@ the columns must be as follows:
 |     +-----------------+---------------------------------+
 |     | amount          | "amount in product units (REAL)"|
 +-----+-----------------+---------------------------------+
-
-Instead, if the data_type of the water table is
-"2d-gridded-coverage" then it must be defined as follows:
-
+</pre>
+Instead, if the data_type of the water table is "2d-gridded-coverage" then it must be defined as follows:
+<pre>
 +=========================================================+
 |                    TABLE water                          |
 +=====+=================+=================================+
@@ -746,31 +578,25 @@ Instead, if the data_type of the water table is
 |     +-----------------+---------------------------------+
 |     | tile_data       | "BLOB (TIFF)"                   |
 +-----+-----------------+---------------------------------+
-
-Where tile_data is a tiff blob holding Float32 values as per
-GeoPackage specifications.
+</pre>
+Where tile_data is a tiff blob holding Float32 values as per GeoPackage specifications.
 
 In either case, the water values are in m3.
 
-Irrigation "application_info.info" is a JSON object
-serialized as a string, such as:
-
+Irrigation "application_info.info" is a JSON object serialized as a string, such as:
+<pre>
 +-----------------------------------------------+
 | {                                             |
 |   "amount": &lt;amount_in_m<sup>3</sup>&gt;                    |
 | }                                             |
 +-----------------------------------------------+
-
-The "amount" attribute is the total amount of water that was
-applied on the entire field; it must match the sum of all
-values in the "water" table.
-
+</pre>
+The "amount" attribute is the total amount of water that was applied on the entire field; it must match the sum of all values in the "water" table.
 
 <h2>6.1.4 Harvesting Application Type</h2>
 
-In addition to the base tables, a harvesting application
-result GeoPackage MUST contain a yield table.
-
+In addition to the base tables, a harvesting application result GeoPackage MUST contain a yield table.
+<pre>
 +=========================================================+
 |                TABLE gpkg_contents                      |
 +=====+=============+=====================================+
@@ -782,10 +608,9 @@ result GeoPackage MUST contain a yield table.
 |     +-------------+-------------------------------------+
 |     | data_type   | "2d-gridded-coverage|features"      |
 +-----+-------------+-------------------------------------+
-
-If the data_type of the "yield" table is "features", then
-the columns must be as follows:
-
+</pre>
+If the data_type of the "yield" table is "features", then the columns must be as follows:
+<pre>
 +=========================================================+
 |                    TABLE yield                          |
 +=====+=================+=================================+
@@ -797,10 +622,9 @@ the columns must be as follows:
 |     +-----------------+---------------------------------+
 |     | amount          | "amount in crop units (REAL)"   |
 +-----+-----------------+---------------------------------+
-
-Instead, if the data_type of the yield table is
-"2d-gridded-coverage" then it must be defined as follows:
-
+</pre>
+Instead, if the data_type of the yield table is "2d-gridded-coverage" then it must be defined as follows:
+<pre>
 +=========================================================+
 |                    TABLE yield                          |
 +=====+=================+=================================+
@@ -816,16 +640,13 @@ Instead, if the data_type of the yield table is
 |     +-----------------+---------------------------------+
 |     | tile_data       | "BLOB (TIFF)"                   |
 +-----+-----------------+---------------------------------+
+</pre>
+Where tile_data is a tiff blob holding Float32 values as per GeoPackage specifications.
 
-Where tile_data is a tiff blob holding Float32 values as per
-GeoPackage specifications.
+In either case, the product values are in the units specified in "application_info.info.crop.unit".
 
-In either case, the product values are in the units
-specified in "application_info.info.crop.unit".
-
- Harvesting "application_info.info" is a JSON object
-serialized as a string, such as:
-
+Harvesting "application_info.info" is a JSON object serialized as a string, such as:
+<pre>
 +-----------------------------------------------+
 | {                                             |
 |   "crop": {                                   |
@@ -835,18 +656,13 @@ serialized as a string, such as:
 |   "amount": &lt;amount&gt;                          |
 | }                                             |
 +-----------------------------------------------+
-
-The "crop_id" attribute is defined as per
-ANNEX 1 – Crop Reference Data. The "amount" attribute is the
-total amount of crops (in the specified units) harvested in
-the entire field; it must match the sum of all values in the
-"yield" table.
+</pre>
+The "crop_id" attribute is defined as per ANNEX 1 – Crop Reference Data. The "amount" attribute is the total amount of crops (in the specified units) harvested in the entire field; it must match the sum of all values in the "yield" table.
 
 <h2>6.1.5 Sowing Application Type</h2>
 
-In addition to the base tables, a sowing application result
-GeoPackage MUST contain a "seed_or_plant" table.
-
+In addition to the base tables, a sowing application result GeoPackage MUST contain a "seed_or_plant" table.
+<pre>
 +=========================================================+
 |                TABLE gpkg_contents                      |
 +=====+=============+=====================================+
@@ -858,10 +674,9 @@ GeoPackage MUST contain a "seed_or_plant" table.
 |     +-------------+-------------------------------------+
 |     | data_type   | "2d-gridded-coverage|features"      |
 +-----+-------------+-------------------------------------+
-
-If the data_type of the "product" table is "features", then
-the columns must be as follows:
-
+</pre>
+If the data_type of the "product" table is "features", then the columns must be as follows:
+<pre>
 +=========================================================+
 |                    TABLE seed                           |
 +=====+=================+=================================+
@@ -873,10 +688,9 @@ the columns must be as follows:
 |     +-----------------+---------------------------------+
 |     | amount          | "amount in seed units (REAL)"   |
 +-----+-----------------+---------------------------------+
-
-Instead, if the data_type of the product table is
-"2d-gridded-coverage" then it must be defined as follows:
-
+</pre>
+Instead, if the data_type of the product table is "2d-gridded-coverage" then it must be defined as follows:
+<pre>
 +=========================================================+
 |                    TABLE seed                           |
 +=====+=================+=================================+
@@ -892,16 +706,13 @@ Instead, if the data_type of the product table is
 |     +-----------------+---------------------------------+
 |     | tile_data       | "BLOB (TIFF)"                   |
 +-----+-----------------+---------------------------------+
+</pre>
+Where tile_data is a tiff blob holding Float32 values as per GeoPackage specifications.
 
-Where tile_data is a tiff blob holding Float32 values as per
-GeoPackage specifications.
+In either case, the seed values are in the units specified in "application_info.info.seed.unit".
 
-In either case, the seed values are in the units specified
-in "application_info.info.seed.unit".
-
-Sowing "application_info.info" is a JSON object serialized
-as a string, such as:
-
+Sowing "application_info.info" is a JSON object serialized as a string, such as:
+<pre>
 +-----------------------------------------------+
 | {                                             |
 |   "seed": {                                   |
@@ -914,121 +725,59 @@ as a string, such as:
 |   "amount": &lt;amount&gt;                          |
 | }                                             |
 +-----------------------------------------------+
-
-The "crop_id" attribute is defined as per
-ANNEX 1 – Crop Reference Data. The "weight_of_1000"
-attribute is the weight in kg for 1000 seeds; it can be
-used to map units between kg and count. The "amount"
-attribute is the total amount of seed (in the specified
-units) sowed in the entire field; it must match the sum of
-all values in the "seed" table.
+</pre>
+The "crop_id" attribute is defined as per ANNEX 1 – Crop Reference Data. The "weight_of_1000" attribute is the weight in kg for 1000 seeds; it can be used to map units between kg and count. The "amount" attribute is the total amount of seed (in the specified units) sowed in the entire field; it must match the sum of all values in the "seed" table.
 
 <h2>6.1.6 Other Application Type</h2>
 
-The "other" application type is meant to provide a temporary
-solution for application types that have not yet been
-standardized.
+The "other" application type is meant to provide a temporary solution for application types that have not yet been standardized.
 
-In addition to the base tables, an "other" application
-result GeoPackage MAY contain an arbitrary number of
-additional data and attribute tables.
+In addition to the base tables, an "other" application result GeoPackage MAY contain an arbitrary number of additional data and attribute tables.
 
-"Other" "application_info.info" is an arbitrary JSON object
-serialized as a string with no defined convention. It is
-expected that the consumers and producers of these files
-will agree on private interpretation of the
-"application_info.info" to carry out their operations.
+"Other" "application_info.info" is an arbitrary JSON object serialized as a string with no defined convention. It is expected that the consumers and producers of these files will agree on private interpretation of the "application_info.info" to carry out their operations.
 
-field_data services MUST store "other" application result
-GeoPackage files with only minimal generic validation.
-
+field_data services MUST store "other" application result GeoPackage files with only minimal generic validation.
 
 <h2>7 Access and Authentication</h2>
 
-Farmers MUST have an account setup on a field_data service
-in order to authenticate and access API endpoints. The
-service implementor is responsible for the creation of
-accounts; it is not covered in the ATLAS Service Template
-specifications.
+Farmers MUST have an account setup on a field_data service in order to authenticate and access API endpoints. The service implementor is responsible for the creation of accounts; it is not covered in the ATLAS Service Template specifications.
 
-Unless specifically documented in the OpenAPI specifications,
-all operation must include credentials in form of Bearer
-authentication (also called token authentication). Clients
-can obtain an access token on behalf of their user from the
-service's authorization server (see ATLAS service pairing).
+Unless specifically documented in the OpenAPI specifications, all operation must include credentials in form of Bearer authentication (also called token authentication). Clients can obtain an access token on behalf of their user from the service's authorization server (see ATLAS service pairing).
 
-Some of the information held by field_data services are
-considered to be sensitive from a GDPR perspective.The
-service's authorization server MUST request the client's
-end-user consent at service pairing time in order to deliver
-an access token.
+Some of the information held by field_data services are considered to be sensitive from a GDPR perspective.The service's authorization server MUST request the client's end-user consent at service pairing time in order to deliver an access token.
 
 <h2>8 Dynamic Behaviour</h2>
 
-The purpose of the diagrams in this section is to illustrate
-communication patterns, more complex than plain
-request/response API calls, that involve several
-interactions and/or asynchronous behaviour. Even though a
-sequence diagram representation is used, the diagrams are by
-no means to be interpreted as UML Sequence Diagrams.
-Specifically, in the spirit of focusing on functional
-behaviour and readability, error handling is deliberately
-not covered in the diagram.
+The purpose of the diagrams in this section is to illustrate communication patterns, more complex than plain request/response API calls, that involve several interactions and/or asynchronous behaviour. Even though a sequence diagram representation is used, the diagrams are by no means to be interpreted as UML Sequence Diagrams. Specifically, in the spirit of focusing on functional behaviour and readability, error handling is deliberately not covered in the diagram.
 
 <h2>8.1 Subscriptions</h2>
 
-The service template mandates a "notification event" pattern.
-In this pattern, only the information that an event
-(creation, update, deletion) has occurred will be sent (see
-Subscription Notification), and in case of updates, the kind
-of information that changed. It is up to the subscriber to
-decide whether the event is relevant and whether to perform
-a data query upon reception of the notification or not.
+The service template mandates a "notification event" pattern. In this pattern, only the information that an event (creation, update, deletion) has occurred will be sent (see Subscription Notification), and in case of updates, the kind of information that changed. It is up to the subscriber to decide whether the event is relevant and whether to perform a data query upon reception of the notification or not.
 
-<img src="doc/subscription.png" style="width: 420px" />
+<img src="doc/subscription.png" style="width: 420px"/>
 
-A notification is considered successful if the client
-returns a http result code 2XX.
+A notification is considered successful if the client returns a http result code 2XX.
 
-Errors may occur during notification delivery. Depending on
-the type of error, services must react in different ways:
+Errors may occur during notification delivery. Depending on the type of error, services must react in different ways:
 
-i) Network error - the connection to the client's host
-(from notification URL) cannot be established. The service
-MUST retry a certain number of times. The number of retries
-and possible backoff strategy is left at the discretion of
-the service implementer. If the
+i) Network error - the connection to the client's host (from notification URL) cannot be established. The service MUST retry a certain number of times. The number of retries and possible backoff strategy is left at the discretion of the service implementer. If the
 
-ii) Server errors (5XX result code) – these errors are
-potentially transient. The same strategy as for Network
-errors SHOULD be applied.
+ii) Server errors (5XX result code) – these errors are potentially transient. The same strategy as for Network errors SHOULD be applied.
 
-iii) Client errors (4XX result code) – typically when the
-notification URL is invalid, or the authentication is
-invalid/expired. 4XX errors should never be sent for
-transient client-side conditions and therefore services
-SHOULD NOT attempt retries.
+iii) Client errors (4XX result code) – typically when the notification URL is invalid, or the authentication is invalid/expired. 4XX errors should never be sent for transient client-side conditions and therefore services SHOULD NOT attempt retries.
 
-Upon an excessive number of errors, services MAY
-automatically cancel a subscription. In that case, they
-SHOULD perform a "soft" cancellation where, instead of
-deleting the subscription record, a subscription can be
-reactivated upon reception of a refresh_subscription call.
+Upon an excessive number of errors, services MAY automatically cancel a subscription. In that case, they SHOULD perform a "soft" cancellation where, instead of deleting the subscription record, a subscription can be reactivated upon reception of a refresh_subscription call.
 
 <h2>8.2 Subscription Notification</h2>
 
-The notification URL supplied by the subscriber MUST be
-invoked with an HTTP POST command.
+The notification URL supplied by the subscriber MUST be invoked with an HTTP POST command.
 
-When a notification authorisation parameter was supplied by
-the subscriber, the service MUST include a bearer token
-authentication in the form of an HTTP header:
+When a notification authorisation parameter was supplied by the subscriber, the service MUST include a bearer token authentication in the form of an HTTP header:
 
 Authorization: bearer &lt;notification authorization&gt;
 
-A notification payload describing the type of event MUST be
-included:
-
+A notification payload describing the type of event MUST be included:
+<pre>
   {
     "subscription_id": "&lt;my subscription id&gt;",
     "date": "&lt;ISO 8601 UTC date/time&gt;",
@@ -1036,40 +785,24 @@ included:
     "event ": "&lt;CREATED|UPDATED|DELETED&gt;",
     "changes": ["attributes"]
   }
+</pre>
+In case of an UPDATE event, services SHOULD include the name of the attributes that were changed in the form of attribute JSONPaths. This allows subscribers to filter relevant notifications based on the field data that is relevant to their purpose. In the absence of changed attributes information, the subscriber must assume that all attributes have changed.
 
-In case of an UPDATE event, services SHOULD include the name
-of the attributes that were changed in the form of attribute
-JSONPaths. This allows subscribers to filter relevant
-notifications based on the field data that is relevant to
-their purpose. In the absence of changed attributes
-information, the subscriber must assume that all attributes
-have changed.
-
+<pre>
 Notifications are generated for the following "attributes":
     - base
     - crop (for any change in crop details or crop_history)
     - driving_path (for any change in driving path)
     - applications (after application results are added)
-
-Implementations of field_data are responsible for providing
-end-user configuration and management tools in their
-proprietary user interface, such as import from a shapefile,
-boundary editing in the browser, … Changes generated by
-these tools must generate an appropriate notification where
-relevant.
+</pre>
+Implementations of field_data are responsible for providing end-user configuration and management tools in their proprietary user interface, such as import from a shapefile, boundary editing in the browser, … Changes generated by these tools must generate an appropriate notification where relevant.
 
 <h2>ANNEX 1 – Crop Reference Data</h2>
 
-Crop IDs in ATLAS are taken from the FAO's LIST OF CROPS,
-BOTANICAL NAME AND CODE NUMBER (<a href="http://www.fao.org/economic/the-statistics-division-ess/world-census-of-agriculture/programme-for-the-world-census-of-agriculture-2000/appendix-3-alphabetical-list-of-crops-botanical-name-and-code-number/en/">http://www.fao.org/economic/
-the-statistics-division-ess/world-census-of-agriculture/
-programme-for-the-world-census-of-agriculture-2000/
-appendix-3-alphabetical-list-of-crops-botanical-name-
-and-code-number/en/</a>)
+Crop IDs in ATLAS are taken from the FAO's LIST OF CROPS, BOTANICAL NAME AND CODE NUMBER (<a
+        href="http://www.fao.org/economic/the-statistics-division-ess/world-census-of-agriculture/programme-for-the-world-census-of-agriculture-2000/appendix-3-alphabetical-list-of-crops-botanical-name-and-code-number/en/">http://www.fao.org/economic/the-statistics-division-ess/world-census-of-agriculture/programme-for-the-world-census-of-agriculture-2000/appendix-3-alphabetical-list-of-crops-botanical-name-and-code-number/en/</a>)
 
-Only the crop id scheme is fundamentally relevant as a common
-reference. Software applications are free to provide their
-preferred names and translations.
+Only the crop id scheme is fundamentally relevant as a common reference. Software applications are free to provide their preferred names and translations.
 
 <table>
     <tr><td>CROP</td><td>BOTANICAL NAME</td><td>CROP ID</td></tr>
