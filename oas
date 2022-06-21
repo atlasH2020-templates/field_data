@@ -667,7 +667,7 @@
                 "example": [
                   {
                     "date": "2021-04-23T18:25:43.511Z",
-                    "application_type": "fertilization",
+                    "application_type": "fertilisation",
                     "application_info": {
                       "data_layers": [
                         "N",
@@ -1295,7 +1295,7 @@
       "ApplicationType": {
         "type": "string",
         "enum": [
-          "fertilization",
+          "fertilisation",
           "crop_protection",
           "irrigation",
           "harvesting",

@@ -223,7 +223,7 @@ If not driving path is defined or not supported, services MUST return 204 NO CON
 
 <h2>5.4 Applications Results Functions</h2>
 
-Application results are operations that are performed on a field, yielding results in the form of application maps, that are necessary for reporting or as inputs for other services. At this time, field_data defines specific application results formats for "fertilization", "crop_protection", "irrigation", "harvesting" and "sowing". A general-purpose type "other" is available for types of applications that have not yet been formalized (see 6.1 Application Results File Formats).
+Application results are operations that are performed on a field, yielding results in the form of application maps, that are necessary for reporting or as inputs for other services. At this time, field_data defines specific application results formats for "fertilisation", "crop_protection", "irrigation", "harvesting" and "sowing". A general-purpose type "other" is available for types of applications that have not yet been formalized (see 6.1 Application Results File Formats).
 
 The results of an application are always in GeoPackage format but with conventions that are specific to each application type.
 
@@ -375,7 +375,7 @@ and a single row:
 +=====+=============+=====================================+
 | ROW | COLUMN      | VALUE                               |
 +-----+-------------+-------------------------------------+
-|     | type        | "fertilization|crop_protection|     |
+|     | type        | "fertilisation|crop_protection|     |
 |     |             | irrigation|harvesting|sowing|other" |
 |  1  +-------------+-------------------------------------+
 |     | date        | "yyyy-MM-ddTHH:mm:ssZ"              |
@@ -385,9 +385,9 @@ and a single row:
 </pre>
 Additional application type-specific conventions, within the GeoPackage standard, are defined below. Service implementations MUST perform basic validity checks on submitted GeoPackage files to make sure they comply with the requirements of this section.
 
-<h2>6.1.1 Fertilization Application Type</h2>
+<h2>6.1.1 Fertilisation Application Type</h2>
 
-In addition to the base tables, a fertilization application result GeoPackage MUST contain a product data table.
+In addition to the base tables, a fertilisation application result GeoPackage MUST contain a product data table.
 <pre>
 +=========================================================+
 |                TABLE gpkg_contents                      |
@@ -437,7 +437,7 @@ Where tile_data is a tiff blob holding Float32 values as per GeoPackage specific
 
 In either case, the product values are in the units specified in "application_info.info.product.unit".
 
-Fertilization "application_info.info" is a JSON object serialized as a string, such as:
+Fertilisation "application_info.info" is a JSON object serialized as a string, such as:
 <pre>
 +-----------------------------------------------+
 | {                                             |
