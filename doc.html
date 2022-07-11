@@ -769,10 +769,6 @@ Upon an excessive number of errors, services MAY automatically cancel a subscrip
 
 The notification URL supplied by the subscriber MUST be invoked with an HTTP POST command.
 
-When a notification authorisation parameter was supplied by the subscriber, the service MUST include a bearer token authentication in the form of an HTTP header:
-
-Authorization: bearer &lt;notification authorization&gt;
-
 A notification payload describing the type of event MUST be included:
 <pre>
   {
