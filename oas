@@ -3,7 +3,7 @@
   "info": {
     "title": "field_data API",
     "description": "API specification for the field_data service template",
-    "version": "0.3.6"
+    "version": "0.3.7"
   },
   "tags": [
     {
@@ -759,8 +759,8 @@
               "schema": {
                 "type": "string",
                 "format": "byte",
-                "description": "base64 encoded type-specific GeoPackage (see detailed specifications for specific conventions)",
-                "example": "<base64 encoded GeoPackage>"
+                "description": "type-specific GeoPackage (see detailed specifications for specific conventions)",
+                "example": "<binary gpkg data>"
               }
             }
           }
