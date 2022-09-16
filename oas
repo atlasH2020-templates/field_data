@@ -120,7 +120,7 @@
                   },
                   "example": [
                     {
-                      "id": "urn:com.agricircle.atlas.field_data:FDBE6F55-6179-4B88-9177-4AFBED33ADAC",
+                      "urn": "urn:com.agricircle.atlas.field_data:FDBE6F55-6179-4B88-9177-4AFBED33ADAC",
                       "name": "field by the pond",
                       "boundaries": {
                         "type": "Polygon",
