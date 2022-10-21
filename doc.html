@@ -12,7 +12,7 @@
 <div class="header">
 ATLAS Service Template Specification
 Name                                                   field_data
-Version                                                     0.3.7
+Version                                                     0.3.8
 Author(s)                            M. Caballero (AgriCircle AG)
 </div>
 
@@ -144,6 +144,9 @@ A field urn MUST have the following format:
 where &lt;service_id&gt; is the ATLAS id of the field_data service on which the query was made. Field URNs are often passed as parameters to other types of services. These services must validate that the &lt;service_id&gt; in the URN matches a field_data service to which they are paired.
 
 Boundaries are defined as a GeoJSON polygon feature where the "holes" represent areas with driving restrictions (water, trees, fenced area, ...). The coordinates MAY include elevation information relevant to drivability.
+
+Boundaries MUST NEVER CHANGE for a given field. If needed, the field must be archived and a new field with the updated boundaries can be created.
+
 
 <h2>5.1.3 List Groups</h2>
 
