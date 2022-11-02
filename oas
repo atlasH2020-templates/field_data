@@ -1150,10 +1150,10 @@
               "format": "date-time",
               "description": "ISO 8601 UTC date/time at which the application took place"
             },
-            "type": {
+            "application_type": {
               "$ref": "#/components/schemas/ApplicationType"
             },
-            "info": {
+            "application_info": {
               "type": "object",
               "description": "Application-specific additional properties (see detailed specifications)"
             },
