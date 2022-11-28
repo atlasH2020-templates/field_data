@@ -588,10 +588,12 @@ Irrigation "application_info.info" is a JSON object serialized as a string, such
 +-----------------------------------------------+
 | {                                             |
 |   "amount": &lt;amount_in_m<sup>3</sup>&gt;                    |
+|   "duration": &lt;optional duration_in_min<sup>3</sup>&gt;     |
 | }                                             |
 +-----------------------------------------------+
 </pre>
 The "amount" attribute is the total amount of water that was applied on the entire field; it must match the sum of all values in the "water" table.
+The optional "duration" attribute is the duration of the operation in minutes, from the start date-time.
 
 <h2>6.1.4 Harvesting Application Type</h2>
 
