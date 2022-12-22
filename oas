@@ -2,11 +2,11 @@
   "openapi": "3.0.1",
   "info": {
     "title": "ATLAS field_data Service Template API",
-    "version": "0.3.9"
+    "version": "0.3.10"
   },
   "externalDocs": {
     "description": "Service Template Document",
-    "url": "https://htmlpreview.github.io/?https://github.com/atlasH2020-templates/field_data/blob/v0.3.9/doc.html"
+    "url": "https://htmlpreview.github.io/?https://github.com/atlasH2020-templates/field_data/blob/v0.3.10/doc.html"
   },
   "tags": [
     {
