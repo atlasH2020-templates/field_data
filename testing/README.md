@@ -10,6 +10,6 @@ Download the [field_data.postman_collection.json](./field_data.postman_collectio
 ## Usage
 Configure the `field_data_url` variable in the atlas-h2020-variables environment. You may obtain this URL by executing the registry API `get service api` request after manually setting the `service_name` registry collection variable to an existing ATLAS service, or by manually entering the URL to a service you are developing, if it is not yet registered.
 
-You will also need to obtain a refresh token which you must save in the `field_token` environment variable (see https://github.com/atlasH2020/testing#obtaining-a-service-token).
+You will also need to obtain a refresh token which you must save in the `field_data_token` environment variable (see https://github.com/atlasH2020/testing#obtaining-a-service-token).
 
 You can now experiment with the field_data requests.
