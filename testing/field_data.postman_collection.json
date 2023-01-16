@@ -1,0 +1,387 @@
+{
+	"info": {
+		"_postman_id": "6ea5926c-6f4f-4489-bce7-2b7625403ca4",
+		"name": "ATLAS field_data",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "applications",
+			"item": [
+				{
+					"name": "get_field_applications",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{field_data_url}}/fields/{{field_urn}}/application_results",
+							"host": [
+								"{{field_data_url}}"
+							],
+							"path": [
+								"fields",
+								"{{field_urn}}",
+								"application_results"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "download_field_application_results",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{field_data_url}}/fields/{{field_urn}}/application_results/anydummyidfornow",
+							"host": [
+								"{{field_data_url}}"
+							],
+							"path": [
+								"fields",
+								"{{field_urn}}",
+								"application_results",
+								"anydummyidfornow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add_field_application",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/geopackage+sqlite3",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/Users/mac/Downloads/phylloxera.gpkg"
+							}
+						},
+						"url": {
+							"raw": "{{field_data_url}}/fields/{{field_urn}}/application_results",
+							"host": [
+								"{{field_data_url}}"
+							],
+							"path": [
+								"fields",
+								"{{field_urn}}",
+								"application_results"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "subscriptions",
+			"item": [
+				{
+					"name": "create_subscription",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = JSON.parse(responseBody);",
+									"if (res.id)",
+									"  pm.collectionVariables.set(\"subscription_id\", res.id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"notification_url\": \"https://staging.atlas.agricircle.com/api/h2020/field/test/aedit\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{field_data_url}}/subscriptions",
+							"host": [
+								"{{field_data_url}}"
+							],
+							"path": [
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel_subscription",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{field_data_url}}/subscriptions/{{subscription_id}}",
+							"host": [
+								"{{field_data_url}}"
+							],
+							"path": [
+								"subscriptions",
+								"{{subscription_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh_subscription",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{field_data_url}}/subscriptions/{{subscription_id}}",
+							"host": [
+								"{{field_data_url}}"
+							],
+							"path": [
+								"subscriptions",
+								"{{subscription_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PROPRIETARY: get_subscriptions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = JSON.parse(responseBody)",
+									"if (res.length) {",
+									"   postman.collectionVariables(\"subscription_id\", res[0].id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{field_data_url}}/proprietary/subscriptions",
+							"host": [
+								"{{field_data_url}}"
+							],
+							"path": [
+								"proprietary",
+								"subscriptions"
+							]
+						},
+						"description": "https://staging.atlas.agricircle.com/api/h2020/fertilisation_advisor/proprietary/advices"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "list_groups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = JSON.parse(responseBody);",
+							"if (res.length)",
+							"  pm.collectionVariables.set(\"group_id\", res[0].id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{field_data_url}}/groups",
+					"host": [
+						"{{field_data_url}}"
+					],
+					"path": [
+						"groups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list_fields",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = JSON.parse(responseBody);",
+							"if (res.length) {",
+							"  pm.environment.set(\"field_urn\", res[0].urn);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{field_data_url}}/fields",
+					"host": [
+						"{{field_data_url}}"
+					],
+					"path": [
+						"fields"
+					],
+					"query": [
+						{
+							"key": "group_id",
+							"value": "{{group_id}}",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_field_info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{field_data_url}}/fields/{{field_urn}}",
+					"host": [
+						"{{field_data_url}}"
+					],
+					"path": [
+						"fields",
+						"{{field_urn}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_crop_history",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{field_data_url}}/fields/{{field_urn}}/crops",
+					"host": [
+						"{{field_data_url}}"
+					],
+					"path": [
+						"fields",
+						"{{field_urn}}",
+						"crops"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_crop_details",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var moment = require('moment');",
+							"pm.variables.set('today', moment().format((\"YYYY-MM-DD\")));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{field_data_url}}/fields/{{field_urn}}/crops/{{today}}",
+					"host": [
+						"{{field_data_url}}"
+					],
+					"path": [
+						"fields",
+						"{{field_urn}}",
+						"crops",
+						"{{today}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{field_data_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "group_id",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "subscription_id",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
