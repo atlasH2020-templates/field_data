@@ -167,39 +167,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "PROPRIETARY: get_subscriptions",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var res = JSON.parse(responseBody)",
-									"if (res.length) {",
-									"   postman.collectionVariables(\"subscription_id\", res[0].id);",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{field_data_url}}/proprietary/subscriptions",
-							"host": [
-								"{{field_data_url}}"
-							],
-							"path": [
-								"proprietary",
-								"subscriptions"
-							]
-						},
-						"description": "https://staging.atlas.agricircle.com/api/h2020/fertilisation_advisor/proprietary/advices"
-					},
-					"response": []
 				}
 			]
 		},
