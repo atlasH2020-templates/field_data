@@ -12,7 +12,7 @@
 <div class="header">
 ATLAS Service Template Specification
 Name                                                   field_data
-Version                                                    0.3.10
+Version                                                    0.3.11
 Author(s)                            M. Caballero (AgriCircle AG)
 </div>
 
@@ -303,9 +303,9 @@ Refresh a subscription to prevent it from being automatically cancelled.
 
 This section focuses on the description of binary (file) data formats. Please refer to the field_data OpenAPI specifications for details on all other payload and parameter descriptions.
 
-<h2>6.1 Application Results File Formats</h2>
+<h2>6.1 Application Results</h2>
 
-Application result data MUST be in GeoPackage (<a href="https://www.geopackage.org/">https://www.geopackage.org/</a>) format version 1.2 or newer.
+Detailed application result data, when available, MUST be in GeoPackage (<a href="https://www.geopackage.org/">https://www.geopackage.org/</a>) format version 1.2 or newer. When no GeoPackage is supplied, operation is assumed to take place evenly over the entire field area.
 <pre>
 +=========================================================+
 |                TABLE gpkg_contents                      |
@@ -321,7 +321,7 @@ Application result data MUST be in GeoPackage (<a href="https://www.geopackage.o
 |     | data_type   | "attributes"                        |
 +-----+-------------+-------------------------------------+
 </pre>
-All Atlas GeoPackage files MUST contain an attributes table named "atlas" with the following structure:
+All Atlas GeoPackage files MUST contain an attribute table named "atlas" with the following structure:
 <pre>
 +============================+
 |     TABLE atlas            |
@@ -358,7 +358,7 @@ The "atlas.format_version" field MUST be the version of the field_data template 
 
 field_data services MUST validate that the "atlas.type" column is equal to "application_result".
 
-By general convention, all application result GeoPackage files MUST contain an attributes table named "application_info" with the following structure:
+By general convention, all application result GeoPackage files MUST contain an attribute table named "application_info" with the following structure:
 <pre>
 +============================+
 |  TABLE application_info    |
@@ -379,7 +379,8 @@ and a single row:
 | ROW | COLUMN      | VALUE                               |
 +-----+-------------+-------------------------------------+
 |     | type        | "fertilization|crop_protection|     |
-|     |             | irrigation|harvesting|sowing|other" |
+|     |             | irrigation|harvesting|sowing|       |
+|     |             | tillage|other"                      |
 |  1  +-------------+-------------------------------------+
 |     | date        | "yyyy-MM-ddTHH:mm:ssZ"              |
 |     +-------------+-------------------------------------+
@@ -454,11 +455,16 @@ Fertilisation "application_info.info" is a JSON object serialized as a string, s
 |         ...                                   |
 |      }                                        |
 |   },                                          |
-|   "amount": &lt;amount_in_product_unit&gt;          |
+|   "amount": &lt;amount_in_product_unit&gt;,         |
+|   "energy": {                                 |
+|      ...                                      |
+|   }                                           |
 | }                                             |
 +-----------------------------------------------+
 </pre>
 The nutrient identifier (e.g., P2O5) are defined in the fertilisation_advisor service template. The "amount" attribute is the total amount of product that was applied on the entire field; it must match the sum of all values in the "product" table.
+
+The optional "energy" attributes informs about the energy expended for this operation. Please see 6.2 Energy for more details.
 
 <h2>6.1.2 Crop Protection Application Type</h2>
 
@@ -519,19 +525,21 @@ Crop protection "application_info.info" is a JSON object serialized as a string,
 |   "product": {                                |
 |      "name": "&lt;commercial_name&gt;",             |
 |      "unit": "kg|l",                          |
-|      "substances": {                          |
-|         "80-56-8": &lt;amnt_in_grams_per_unit&gt;,  |
-|         ...                                   |
-|      }                                        |
 |   },                                          |
 |   "dilution": &lt;l_water_per_product_unit&gt;,     |
-|   "amount": &lt;amount&gt;                          |
+|   "amount": &lt;amount&gt;,                         |
+|   "energy": {                                 |
+|      ...                                      |
+|   }                                           |
 | }                                             |
 +-----------------------------------------------+
 </pre>
 "product.substances" is optional. When defined, CAS Numbers must be used as denominations for the active substances whose amounts are given in grams per "product.unit".
 
 "amount" refers to the total amount of water-diluted solution (in litre) if "dilution" is specified; otherwise, the total amount of pure product in "product.unit".
+
+The optional "energy" attributes informs about the energy expended for this operation. Please see 6.2 Energy for more details.
+
 
 <h2>6.1.3 Irrigation Application Type</h2>
 
@@ -589,13 +597,20 @@ Irrigation "application_info.info" is a JSON object serialized as a string, such
 <pre>
 +-----------------------------------------------+
 | {                                             |
-|   "amount": &lt;amount_in_m<sup>3</sup>&gt;                    |
-|   "duration": &lt;optional duration_in_min<sup>3</sup>&gt;     |
+|   "amount": &lt;amount_in_m<sup>3</sup>&gt;,                   |
+|   "duration": &lt;optional duration_in_min&gt;,     |
+|   "energy": {                                 |
+|      ...                                      |
+|   }                                           |
 | }                                             |
 +-----------------------------------------------+
 </pre>
 The "amount" attribute is the total amount of water that was applied on the entire field; it must match the sum of all values in the "water" table.
+
 The optional "duration" attribute is the duration of the operation in minutes, from the start date-time.
+
+The optional "energy" attributes informs about the energy expended for this operation. Please see 6.2 Energy for more details.
+
 
 <h2>6.1.4 Harvesting Application Type</h2>
 
@@ -647,7 +662,7 @@ Instead, if the data_type of the yield table is "2d-gridded-coverage" then it mu
 </pre>
 Where tile_data is a tiff blob holding Float32 values as per GeoPackage specifications.
 
-In either case, the product values are in the units specified in "application_info.info.crop.unit".
+In either case, the yield values are in the units specified in "application_info.info.crop.unit".
 
 Harvesting "application_info.info" is a JSON object serialized as a string, such as:
 <pre>
@@ -657,11 +672,16 @@ Harvesting "application_info.info" is a JSON object serialized as a string, such
 |     "crop_id": "&lt;crop_id&gt;",                   |
 |     "unit": "kg|count"                        |
 |   },                                          |
-|   "amount": &lt;amount&gt;                          |
+|   "amount": &lt;amount&gt;,                         |
+|   "energy": {                                 |
+|      ...                                      |
+|   }                                           |
 | }                                             |
 +-----------------------------------------------+
 </pre>
 The "crop_id" attribute is defined as per ANNEX 1 - Crop Reference Data. The "amount" attribute is the total amount of crops (in the specified units) harvested in the entire field; it must match the sum of all values in the "yield" table.
+
+The optional "energy" attributes informs about the energy expended for this operation. Please see 6.2 Energy for more details.
 
 <h2>6.1.5 Sowing Application Type</h2>
 
@@ -726,21 +746,145 @@ Sowing "application_info.info" is a JSON object serialized as a string, such as:
 |     "unit": "kg|count",                       |
 |     "weight_of_1000": &lt;in kg&gt;                 |
 |   },                                          |
-|   "amount": &lt;amount&gt;                          |
+|   "amount": &lt;amount&gt;,                         |
+|   "energy": {                                 |
+|      ...                                      |
+|   }                                           |
 | }                                             |
 +-----------------------------------------------+
 </pre>
 The "crop_id" attribute is defined as per ANNEX 1 - Crop Reference Data. The "weight_of_1000" attribute is the weight in kg for 1000 seeds; it can be used to map units between kg and count. The "amount" attribute is the total amount of seed (in the specified units) sowed in the entire field; it must match the sum of all values in the "seed" table.
 
-<h2>6.1.6 Other Application Type</h2>
+The optional "energy" attributes informs about the energy expended for this operation. Please see 6.2 Energy for more details.
+
+
+<h2>6.1.6 Tillage Application Type</h2>
+
+In addition to the base tables, a tillage application result GeoPackage MUST contain a tillage table.
+<pre>
++=========================================================+
+|                TABLE gpkg_contents                      |
++=====+=============+=====================================+
+| ROW | COLUMN      | VALUE                               |
++-----+-------------+-------------------------------------+
+|                    ...                                  |
++-----+-------------+-------------------------------------+
+|     | table_name  | "tillage"                           |
+|     +-------------+-------------------------------------+
+|     | data_type   | "2d-gridded-coverage|features"      |
++-----+-------------+-------------------------------------+
+</pre>
+If the data_type of the "tillage" table is "features", then the columns must be as follows:
+<pre>
++=========================================================+
+|                    TABLE tillage                        |
++=====+=================+=================================+
+| ROW | COLUMN          | VALUE                           |
++-----+-----------------+---------------------------------+
+|     | id              | "INTEGER"                       |
+|     +-----------------+---------------------------------+
+|     | geometry        | "GeoPackage Geometry"           |
+|     +-----------------+---------------------------------+
+|     | depth           | "depth(REAL)"                   |
++-----+-----------------+---------------------------------+
+</pre>
+Instead, if the data_type of the yield table is "2d-gridded-coverage" then it must be defined as follows:
+<pre>
++=========================================================+
+|                    TABLE tillage                        |
++=====+=================+=================================+
+| ROW | COLUMN          | VALUE                           |
++-----+-----------------+---------------------------------+
+|     | id              | "INTEGER"                       |
+|     +-----------------+---------------------------------+
+|     | zoom_level      | "INTEGER"                       |
+|     +-----------------+---------------------------------+
+|     | tile_column     | "INTEGER"                       |
+|     +-----------------+---------------------------------+
+|     | tile_row        | "INTEGER"                       |
+|     +-----------------+---------------------------------+
+|     | tile_data       | "BLOB (TIFF)"                   |
++-----+-----------------+---------------------------------+
+</pre>
+Where tile_data is a tiff blob holding Float32 values as per GeoPackage specifications.
+
+In either case, the depth values are in centimeters.
+
+Tillage "application_info.info" is a JSON object serialized as a string, such as:
+<pre>
++-----------------------------------------------+
+| {                                             |
+|   "average_depth": &lt;depth&gt;,                   |
+|   "energy": {                                 |
+|      ...                                      |
+|   }                                           |
+| }                                             |
++-----------------------------------------------+
+</pre>
+The average_depth is in centimeters. Only the areas where tillage has taken in consideration (ignore no-till zones, if any).
+
+The optional "energy" attributes informs about the energy expended for this operation. Please see 6.2 Energy for more details.
+
+<h2>6.1.7 Other Application Type</h2>
 
 The "other" application type is meant to provide a temporary solution for application types that have not yet been standardized.
 
 In addition to the base tables, an "other" application result GeoPackage MAY contain an arbitrary number of additional data and attribute tables.
 
-"Other" "application_info.info" is an arbitrary JSON object serialized as a string with no defined convention. It is expected that the consumers and producers of these files will agree on private interpretation of the "application_info.info" to carry out their operations.
+"Other" "application_info.info" is an arbitrary JSON object serialized as a string such as:
+
+<pre>
++-----------------------------------------------+
+| {                                             |
+|   "energy": {                                 |
+|      ...                                      |
+|   },                                          |
+|   ... additional information                  |
+| }                                             |
++-----------------------------------------------+
+</pre>
+
+The optional "energy" attributes informs about the energy expended for this operation. Please see 6.2 Energy for more details.
+
+The additional information has no defined convention. It is expected that the consumers and producers of these files will agree on private interpretation of the "application_info.info" to carry out their operations.
 
 field_data services MUST store "other" application result GeoPackage files with only minimal generic validation.
+
+
+<h2>6.2 Energy</h2>
+
+All field operation may include information about the enery expended during the operation within their "application_info.info" metadata.
+
+<pre>
++-----------------------------------------------+
+|   ...                                         |
+|   "energy": {                                 |
+|      "type": "&lt;energy_type&gt;",                 |
+|      "unit": "kg|l|mj",                       |
+|      "amount": &lt;amount_in_units&gt;              |
+|   },                                          |
+|   ...                                         |
++-----------------------------------------------+
+</pre>
+
+unit are encoded as "kg" for kilogram, "l" for litre and "mj" for mega joule.
+
+The possible energy types for tractor operations are:
+<table>
+<tr style="font-weight: bold"><td width="70">code</td><td>description</td></tr>
+<tr><td>diesel</td><td>100% mineral diesel</td></tr>
+<tr><td>diesel_biofuel</td><td>average biofuel blend</td></tr>
+<tr><td>biodiesel</td><td>biodiesel ME</td></tr>
+<tr><td>petrol</td><td>100% mineral petrol</td></tr>
+<tr><td>petrol_biofuel</td><td>average biofuel blend</td></tr>
+<tr><td>bioethanol</td><td>Bio ethanol</td></tr>
+<tr><td>electricity</td><td>Grid</td></tr>
+<tr><td>electricity_hydro</td><td>Hydro electric</td></tr>
+<tr><td>electricity_wind</td><td>Wind</td></tr>
+<tr><td>electricity_solar</td><td>Photo voltaic</td></tr>
+</table>
+
+
 
 <h2>7 Access and Authentication</h2>
 

@@ -2,11 +2,11 @@
   "openapi": "3.0.1",
   "info": {
     "title": "ATLAS field_data Service Template API",
-    "version": "0.3.10"
+    "version": "0.3.11"
   },
   "externalDocs": {
     "description": "Service Template Document",
-    "url": "https://htmlpreview.github.io/?https://github.com/atlasH2020-templates/field_data/blob/v0.3.10/doc.html"
+    "url": "https://htmlpreview.github.io/?https://github.com/atlasH2020-templates/field_data/blob/v0.3.11/doc.html"
   },
   "tags": [
     {
@@ -39,7 +39,7 @@
         "summary": "List groups (list_groups)",
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful operation.",
             "content": {
               "application/json": {
                 "schema": {
@@ -58,7 +58,7 @@
             }
           },
           "401": {
-            "description": "Invalid or missing credentials",
+            "description": "Invalid or missing credentials.",
             "content": {
               "application/json": {
                 "schema": {
@@ -68,7 +68,7 @@
             }
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "content": {
               "application/json": {
                 "schema": {
@@ -93,7 +93,7 @@
         "summary": "List fields (list_fields)",
         "parameters": [
           {
-            "description": "id of a group for which the fields are to be listed",
+            "description": "Id of a group for which the fields are to be listed.",
             "name": "group_id",
             "in": "query",
             "schema": {
@@ -103,7 +103,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful operation.",
             "content": {
               "application/json": {
                 "schema": {
@@ -145,7 +145,7 @@
             }
           },
           "400": {
-            "description": "Invalid or missing parameters",
+            "description": "Invalid or missing parameters.",
             "content": {
               "application/json": {
                 "schema": {
@@ -155,7 +155,7 @@
             }
           },
           "401": {
-            "description": "Invalid or missing credentials",
+            "description": "Invalid or missing credentials.",
             "content": {
               "application/json": {
                 "schema": {
@@ -165,7 +165,7 @@
             }
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "content": {
               "application/json": {
                 "schema": {
@@ -191,7 +191,7 @@
         "parameters": [
           {
             "name": "urn",
-            "description": "the URN (urn:<service_id>:<internal_id>) of a field",
+            "description": "The URN (urn:<service_id>:<internal_id>) of a field.",
             "in": "path",
             "required": true,
             "schema": {
@@ -201,7 +201,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful operation.",
             "content": {
               "application/json": {
                 "schema": {
@@ -238,7 +238,7 @@
             }
           },
           "401": {
-            "description": "Invalid or missing credentials",
+            "description": "Invalid or missing credentials.",
             "content": {
               "application/json": {
                 "schema": {
@@ -248,7 +248,7 @@
             }
           },
           "404": {
-            "description": "The field was not found",
+            "description": "The field was not found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -258,7 +258,7 @@
             }
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "content": {
               "application/json": {
                 "schema": {
@@ -283,7 +283,7 @@
         "summary": "Retrieve driving path information for field (get_driving_path)",
         "parameters": [
           {
-            "description": "the URN (urn:<service_id>:<internal_id>) of a field",
+            "description": "The URN (urn:<service_id>:<internal_id>) of a field.",
             "name": "urn",
             "in": "path",
             "required": true,
@@ -294,22 +294,19 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful operation.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "ab_line": {
-                      "description": "GeoJSON line with 2 points",
+                      "description": "GeoJSON line with 2 points.",
                       "type": "object",
                       "properties": {
                         "type": {
                           "type": "string",
-                          "enum": [
-                            "LineString"
-                          ],
-                          "description": "Always 'LineString'"
+                          "pattern": "^LineString$"
                         },
                         "coordinates": {
                           "type": "array",
@@ -347,10 +344,10 @@
             }
           },
           "204": {
-            "description": "No driving path is configured"
+            "description": "No driving path is configured."
           },
           "401": {
-            "description": "Invalid or missing credentials",
+            "description": "Invalid or missing credentials.",
             "content": {
               "application/json": {
                 "schema": {
@@ -360,7 +357,7 @@
             }
           },
           "404": {
-            "description": "The field was not found",
+            "description": "The field was not found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -370,7 +367,7 @@
             }
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "content": {
               "application/json": {
                 "schema": {
@@ -395,7 +392,7 @@
         "summary": "Returns information on crops over time in the field (get_crop_history)",
         "parameters": [
           {
-            "description": "the URN (urn:<service_id>:<internal_id>) of a field",
+            "description": "The URN (urn:<service_id>:<internal_id>) of a field.",
             "name": "urn",
             "in": "path",
             "required": true,
@@ -406,7 +403,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful operation.",
             "content": {
               "application/json": {
                 "schema": {
@@ -416,7 +413,7 @@
             }
           },
           "401": {
-            "description": "Invalid or missing credentials",
+            "description": "Invalid or missing credentials.",
             "content": {
               "application/json": {
                 "schema": {
@@ -426,7 +423,7 @@
             }
           },
           "404": {
-            "description": "The field was not found",
+            "description": "The field was not found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -436,7 +433,7 @@
             }
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "content": {
               "application/json": {
                 "schema": {
@@ -461,7 +458,7 @@
         "summary": "Returns detailed information on the active crop at the given date (get_crop_details)",
         "parameters": [
           {
-            "description": "the URN (urn:<service_id>:<internal_id>) of a field",
+            "description": "The URN (urn:<service_id>:<internal_id>) of a field.",
             "name": "urn",
             "in": "path",
             "required": true,
@@ -470,7 +467,7 @@
             }
           },
           {
-            "description": "ISO 8601 date for which crop details are requested",
+            "description": "ISO 8601 date for which crop details are requested.",
             "name": "date",
             "in": "path",
             "required": true,
@@ -482,7 +479,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful operation.",
             "content": {
               "application/json": {
                 "schema": {
@@ -502,7 +499,7 @@
             }
           },
           "401": {
-            "description": "Invalid or missing credentials",
+            "description": "Invalid or missing credentials.",
             "content": {
               "application/json": {
                 "schema": {
@@ -512,7 +509,7 @@
             }
           },
           "404": {
-            "description": "The field was not found",
+            "description": "The field was not found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -522,7 +519,7 @@
             }
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "content": {
               "application/json": {
                 "schema": {
@@ -544,10 +541,10 @@
         "tags": [
           "Application Results"
         ],
-        "summary": "Retrieve field application results of a given type (get_application_results)",
+        "summary": "Retrieve field application results of a given type (get_application_results).",
         "parameters": [
           {
-            "description": "the URN (urn:<service_id>:<internal_id>) of a field",
+            "description": "The URN (urn:<service_id>:<internal_id>) of a field.",
             "name": "urn",
             "in": "path",
             "required": true,
@@ -556,7 +553,7 @@
             }
           },
           {
-            "description": "the type of application that generated the results",
+            "description": "The type of application that generated the results.",
             "name": "type",
             "in": "query",
             "schema": {
@@ -564,7 +561,7 @@
             }
           },
           {
-            "description": "ISO 8601 UTC date/time from which to retrieve application results",
+            "description": "ISO 8601 UTC date/time from which to retrieve application results.",
             "name": "date",
             "in": "query",
             "schema": {
@@ -576,7 +573,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful operation.",
             "content": {
               "application/json": {
                 "schema": {
@@ -618,7 +615,7 @@
             }
           },
           "401": {
-            "description": "Invalid or missing credentials",
+            "description": "Invalid or missing credentials.",
             "content": {
               "application/json": {
                 "schema": {
@@ -628,7 +625,7 @@
             }
           },
           "404": {
-            "description": "The field was not found",
+            "description": "The field was not found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -651,7 +648,7 @@
         "summary": "Adds an application result on a field (add_application_result)",
         "parameters": [
           {
-            "description": "the URN (urn:<service_id>:<internal_id>) of a field",
+            "description": "The URN (urn:<service_id>:<internal_id>) of a field.",
             "name": "urn",
             "in": "path",
             "required": true,
@@ -661,24 +658,44 @@
           }
         ],
         "requestBody": {
-          "description": "application parameters",
+          "description": "Use *application/json* variant only when there is no detailed application GeoPackage file.",
+          "required": true,
           "content": {
             "application/geopackage+sqlite3": {
               "schema": {
                 "type": "string",
                 "format": "byte",
-                "description": "type-specific GeoPackage (see detailed specifications for specific conventions)",
+                "description": "Type-specific GeoPackage (see detailed specifications for specific conventions).",
                 "example": "<binary gpkg data>"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "ISO 8601 UTC date/time at which the application took place."
+                  },
+                  "application_type": {
+                    "$ref": "#/components/schemas/ApplicationType"
+                  },
+                  "application_info": {
+                    "type": "object",
+                    "description": "Application-specific additional properties (see detailed specifications)."
+                  }
+                }
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "application result uploaded"
+            "description": "Application result uploaded."
           },
           "400": {
-            "description": "Invalid or missing parameters",
+            "description": "Invalid or missing parameters.",
             "content": {
               "application/json": {
                 "schema": {
@@ -688,7 +705,7 @@
             }
           },
           "401": {
-            "description": "Invalid or missing credentials",
+            "description": "Invalid or missing credentials.",
             "content": {
               "application/json": {
                 "schema": {
@@ -698,7 +715,7 @@
             }
           },
           "404": {
-            "description": "The field was not found",
+            "description": "The field was not found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -723,7 +740,7 @@
         "summary": "Registers a notification URL that will be invoked whenever changes occurs in fields (subscribe).",
         "operationId": "subscribe",
         "requestBody": {
-          "description": "subscription parameters",
+          "description": "Subscription parameters.",
           "content": {
             "application/json": {
               "schema": {
@@ -732,7 +749,7 @@
                   "notification_url": {
                     "type": "string",
                     "format": "uri",
-                    "description": "A subscription's notification_url is invoked with a POST (WITHOUT Authorization headers), containing a Notification request body (see schema below)"
+                    "description": "A subscription's notification_url is invoked with a POST (WITHOUT Authorization headers), containing a Notification request body (see schema below)."
                   }
                 },
                 "required": [
@@ -747,7 +764,7 @@
         },
         "responses": {
           "201": {
-            "description": "subscription created",
+            "description": "Subscription created.",
             "content": {
               "application/json": {
                 "schema": {
@@ -755,12 +772,12 @@
                   "properties": {
                     "id": {
                       "type": "string",
-                      "description": "the service-generated id for the new subscription"
+                      "description": "The service-generated id for the new subscription."
                     },
                     "expiration_date": {
                       "type": "string",
                       "format": "date-time",
-                      "description": "date at which the subscription expires (auto-delete)"
+                      "description": "Date at which the subscription expires (auto-delete)."
                     }
                   }
                 },
@@ -772,7 +789,7 @@
             }
           },
           "400": {
-            "description": "Invalid or missing parameters",
+            "description": "Invalid or missing parameters.",
             "content": {
               "application/json": {
                 "schema": {
@@ -782,7 +799,7 @@
             }
           },
           "401": {
-            "description": "Invalid or missing credentials",
+            "description": "Invalid or missing credentials.",
             "content": {
               "application/json": {
                 "schema": {
@@ -792,7 +809,7 @@
             }
           },
           "409": {
-            "description": "Conflict",
+            "description": "Conflict.",
             "content": {
               "application/json": {
                 "schema": {
@@ -808,7 +825,7 @@
             }
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "content": {
               "application/json": {
                 "schema": {
@@ -834,7 +851,7 @@
         "operationId": "refresh_subscription",
         "parameters": [
           {
-            "description": "the id of a subscription",
+            "description": "The id of a subscription.",
             "name": "id",
             "in": "path",
             "required": true,
@@ -846,7 +863,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful operation.",
             "content": {
               "application/json": {
                 "schema": {
@@ -858,7 +875,7 @@
                     "expiration_date": {
                       "type": "string",
                       "format": "date-time",
-                      "description": "ISO 8601 UTC date/time at which the subscription expires (auto-delete)"
+                      "description": "ISO 8601 UTC date/time at which the subscription expires (auto-delete)."
                     }
                   }
                 },
@@ -870,7 +887,7 @@
             }
           },
           "400": {
-            "description": "Invalid or missing parameters",
+            "description": "Invalid or missing parameters.",
             "content": {
               "application/json": {
                 "schema": {
@@ -880,7 +897,7 @@
             }
           },
           "401": {
-            "description": "Invalid or missing credentials",
+            "description": "Invalid or missing credentials.",
             "content": {
               "application/json": {
                 "schema": {
@@ -890,7 +907,7 @@
             }
           },
           "404": {
-            "description": "The subscription was not found",
+            "description": "The subscription was not found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -900,7 +917,7 @@
             }
           },
           "410": {
-            "description": "The subscription is expired",
+            "description": "The subscription is expired.",
             "content": {
               "application/json": {
                 "schema": {
@@ -910,7 +927,7 @@
             }
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "content": {
               "application/json": {
                 "schema": {
@@ -934,7 +951,7 @@
         "operationId": "unsubscribe",
         "parameters": [
           {
-            "description": "the id of a subscription",
+            "description": "The id of a subscription.",
             "name": "id",
             "in": "path",
             "required": true,
@@ -946,10 +963,10 @@
         ],
         "responses": {
           "204": {
-            "description": "successful operation"
+            "description": "Successful operation."
           },
           "401": {
-            "description": "Invalid or missing credentials",
+            "description": "Invalid or missing credentials.",
             "content": {
               "application/json": {
                 "schema": {
@@ -959,7 +976,7 @@
             }
           },
           "404": {
-            "description": "The subscription was not found",
+            "description": "The subscription was not found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -969,7 +986,7 @@
             }
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "content": {
               "application/json": {
                 "schema": {
@@ -988,12 +1005,10 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "description": "group id"
+            "type": "string"
           },
           "name": {
-            "type": "string",
-            "description": "Group name"
+            "type": "string"
           }
         }
       },
@@ -1005,23 +1020,20 @@
           },
           "name": {
             "type": "string",
-            "description": "Human readable name for a field"
+            "description": "Human readable name for a field."
           },
           "archived": {
             "type": "boolean",
             "default": false,
-            "description": "Optional. If true, the  information can be retrieved but the field should not be used for new operations"
+            "description": "If true (default is false), the information can be retrieved but the field should not be used for new operations."
           },
           "boundaries": {
-            "description": "GeoJSON Polygon (may have holes). Services must enforce that boundaries are immutable and can never be edited even within the proprietary UI",
+            "description": "GeoJSON Polygon (may have holes). Services must enforce that boundaries are immutable and can never be edited even within their proprietary UI.",
             "type": "object",
             "properties": {
               "type": {
                 "type": "string",
-                "enum": [
-                  "Polygon"
-                ],
-                "description": "Always 'Polygon'"
+                "pattern": "^Polygon$"
               },
               "coordinates": {
                 "type": "array",
@@ -1032,9 +1044,9 @@
                     "items": {
                       "type": "number"
                     },
-                    "description": "Must have  2 items for lat/long or 3 items for lat/long/elevation"
+                    "description": "Must have 2 items for lat/long or 3 items for lat/long/elevation."
                   },
-                  "description": "First element is outer boundary, optional addition elements are holes"
+                  "description": "First element is outer boundary, optional addition elements are holes."
                 }
               }
             }
@@ -1046,16 +1058,30 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "unique identifier"
+            "description": "FAO identifier."
           },
           "name": {
             "type": "string",
-            "description": "Human readable name for a crop"
+            "description": "Human readable name for a crop."
           },
           "season_start_date": {
             "type": "string",
             "format": "date",
-            "description": "Season start date for the crop (e.g. last harvest date)"
+            "description": "Season start date for the crop (e.g. last harvest date)."
+          },
+          "residue_management": {
+            "type": "string",
+            "enum": [
+              "leave_distribute",
+              "leave_incorporate",
+              "leave_mulch",
+              "leave_burn",
+              "remove_dont_use",
+              "remove_use",
+              "remove_sell",
+              "remove_compost",
+              "remove_forced_aeration_compost"
+            ]
           }
         },
         "example": {
@@ -1096,10 +1122,7 @@
                 "properties": {
                   "type": {
                     "type": "string",
-                    "enum": [
-                      "MultiPolygon"
-                    ],
-                    "description": "Always 'MultiPolygon'"
+                    "pattern": "^MultiPolygon$"
                   },
                   "coordinates": {
                     "type": "array",
@@ -1112,9 +1135,9 @@
                           "items": {
                             "type": "number"
                           },
-                          "description": "Must have  2 items for lat/long or 3 items for lat/long/elevation"
+                          "description": "Must have 2 items for lat/long or 3 items for lat/long/elevation."
                         },
-                        "description": "First element is outer boundary, optional addition elements are holes"
+                        "description": "First element is outer boundary, optional addition elements are holes."
                       }
                     }
                   }
@@ -1132,13 +1155,14 @@
           "irrigation",
           "harvesting",
           "sowing",
+          "tillage",
           "other"
         ]
       },
       "FieldURN": {
         "type": "string",
         "pattern": "^urn:[a-z][a-z0-9_.\\-]*:[\\w-.]+",
-        "description": "Uniform resource name of a field with the syntax `urn:<service_id>:<internal_id>`. <service_id> must be the id of a valid and active ATLAS service"
+        "description": "Uniform resource name of a field with the syntax `urn:<service_id>:<internal_id>`. <service_id> must be the id of a valid and active ATLAS service."
       },
       "ApplicationResults": {
         "type": "array",
@@ -1148,21 +1172,26 @@
             "date": {
               "type": "string",
               "format": "date-time",
-              "description": "ISO 8601 UTC date/time at which the application took place"
+              "description": "ISO 8601 UTC date/time at which the application took place."
             },
             "application_type": {
               "$ref": "#/components/schemas/ApplicationType"
             },
             "application_info": {
               "type": "object",
-              "description": "Application-specific additional properties (see detailed specifications)"
+              "description": "Application-specific additional properties (see detailed specifications)."
             },
             "download_url": {
               "type": "string",
               "format": "uri",
-              "description": "url to download the application result GeoPackage file"
+              "description": "URL to download the application result GeoPackage file."
             }
-          }
+          },
+          "required": [
+            "date",
+            "application_type",
+            "application_info"
+          ]
         }
       },
       "Subscription": {
@@ -1174,31 +1203,30 @@
           "expiration_date": {
             "type": "string",
             "format": "date-time",
-            "description": "ISO 8601 UTC date/time before which the subscription must be refreshed"
+            "description": "ISO 8601 UTC date/time before which the subscription must be refreshed."
           },
           "notification_url": {
             "type": "string",
             "format": "uri",
-            "description": "callback url where change notifications will be posted"
+            "description": "URL where change notifications will be posted."
           }
         }
       },
       "Notification": {
-        "description": "Payload sent when invoking notification_url",
+        "description": "Payload sent when invoking notification_url.",
         "type": "object",
         "properties": {
           "subscription_id": {
-            "type": "string",
-            "description": "the id of a subscription"
+            "type": "string"
           },
           "date": {
             "type": "string",
             "format": "date-time",
-            "description": "ISO 8601 UTC date/time at which the notification was originally triggered (regardless of retries)"
+            "description": "ISO 8601 UTC date/time at which the notification was originally triggered (regardless of retries)."
           },
           "urn": {
             "type": "string",
-            "description": "the URN of the field (urn:<service_id>:<internal_id>)"
+            "description": "The URN of the field (urn:<service_id>:<internal_id>)."
           },
           "event": {
             "type": "string",
@@ -1209,7 +1237,7 @@
             ]
           },
           "changes": {
-            "description": "attribute group where a change occurred (only present when event=UPDATED)",
+            "description": "Attribute group where a change occurred (only present when event=UPDATED).",
             "type": "array",
             "items": {
               "type": "string",
@@ -1226,16 +1254,16 @@
       },
       "DetailedError": {
         "type": "object",
-        "description": "This defines the structure of an error payload when one is present. Actual messages and additional error information content may change from one implementation to another",
+        "description": "This defines the structure of an error payload when one is present. Actual messages and additional error information content may change from one implementation to another.",
         "properties": {
           "message": {
             "type": "string",
-            "description": "error description"
+            "description": "Error description."
           },
           "status": {
             "type": "string",
             "format": "number",
-            "description": "http error code"
+            "description": "HTTP error code."
           },
           "error_url": {
             "type": "string",
@@ -1247,7 +1275,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Additional detailed information"
+            "description": "Additional detailed information."
           }
         },
         "required": [
