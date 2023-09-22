@@ -1050,19 +1050,47 @@
                 }
               }
             }
+          },
+          "crop_id": {
+            "type": "string",
+            "description": "FAO identifier for current primary crop."
+          },
+          "secondary_crop_id": {
+            "type": "string",
+            "description": "FAO identifier for current secondary crop."
+          },
+          "groups": {
+            "description": "Group(s) to which this field is associated to.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
-        }
+        },
+        "required": [
+          "urn",
+          "name",
+          "boundaries"
+        ]
       },
       "Crop": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "description": "FAO identifier."
+            "description": "FAO identifier for primary crop."
           },
           "name": {
             "type": "string",
-            "description": "Human readable name for a crop."
+            "description": "Human readable name."
+          },
+          "secondary_id": {
+            "type": "string",
+            "description": "FAO identifier for secondary crop."
+          },
+          "secondary_name": {
+            "type": "string",
+            "description": "Human readable name."
           },
           "season_start_date": {
             "type": "string",
@@ -1084,6 +1112,11 @@
             ]
           }
         },
+        "required": [
+          "id",
+          "name",
+          "season_start_date"
+        ],
         "example": {
           "id": "1.1.1.1",
           "name": "Winter wheat",
