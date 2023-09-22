@@ -534,7 +534,7 @@ Crop protection "application_info.info" is a JSON object serialized as a string,
 | }                                             |
 +-----------------------------------------------+
 </pre>
-"product.substances" is optional. When defined, CAS Numbers must be used as denominations for the active substances whose amounts are given in grams per "product.unit".
+"product.dilution" is the amount of water added per product mix unit. If unspecified, it is assumed that the product is applied without dilution (no added water).
 
 "amount" refers to the total amount of water-diluted solution (in litre) if "dilution" is specified; otherwise, the total amount of pure product in "product.unit".
 
