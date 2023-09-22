@@ -523,21 +523,23 @@ Crop protection "application_info.info" is a JSON object serialized as a string,
 +-----------------------------------------------+
 | {                                             |
 |   "product_mix": {                            |
+|      "description": "my usual mix",           |
 |      "composition": [                         |
 |         {                                     |
+|            "type": "fungicide",               |
 |            "name": "product1",                |
-|            "ratio": 0.5,                      |
+|            "ratio": 0.6,                      |
 |            "active_substances": {             |
-|               "copper": 0.05,                 |
-|               "[other]": ...                  |
+|               "copper": 0.05                  |
 |            }                                  |
 |         },                                    |
 |         {                                     |
+|            "type": "herbicide",               |
 |            "name": "product2",                |
 |            "ratio": 0.4                       |
 |         }                                     |
 |      ],                                       |
-|      "dilution": &lt;l_water_per_product_unit&gt;,  |
+|      "dilution": &lt;l_water_per_mix_unit&gt;,      |
 |      "unit": "kg|l",                          |
 |   },                                          |
 |   "amount": &lt;amount&gt;,                         |
