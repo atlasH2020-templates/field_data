@@ -1,4 +1,4 @@
-# ATLAS field_data Service Template \[v0\]
+# ATLAS field_data Service Template \[v0.3.11\]
 
 [Documentation](https://htmlpreview.github.io/?https://github.com/atlasH2020-templates/field_data/blob/v0/doc.html)
 
