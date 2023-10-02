@@ -522,8 +522,8 @@ Crop protection "application_info.info" is a JSON object serialized as a string,
 <pre>
 +-----------------------------------------------+
 | {                                             |
-|   "product_mix": {                            |
-|      "description": "my usual mix",           |
+|   "product": {                                |
+|      "name": "my usual mix",                  |
 |      "composition": [                         |
 |         {                                     |
 |            "type": "fungicide",               |
@@ -539,7 +539,7 @@ Crop protection "application_info.info" is a JSON object serialized as a string,
 |            "ratio": 0.4                       |
 |         }                                     |
 |      ],                                       |
-|      "dilution": &lt;l_water_per_mix_unit&gt;,      |
+|      "dilution": &lt;l_water_per_product_unit&gt;,  |
 |      "unit": "kg|l",                          |
 |   },                                          |
 |   "amount": &lt;amount&gt;,                         |
@@ -549,13 +549,13 @@ Crop protection "application_info.info" is a JSON object serialized as a string,
 | }                                             |
 +-----------------------------------------------+
 </pre>
-The sum of the "product_mix.composition.ratio" MUST amount to 1.
+The sum of the "product.composition.ratio" MUST amount to 1.
 
-The optional "product_mix.composition.active_substances" are not extensively normalized, except for "copper", but they should always be lowercase without spaces. The value next to the active substance MUST be a value between [0..1] indicating the concentration within the product.
+The optional "product.composition.active_substances" are not extensively normalized, except for "copper", but they should always be lowercase without spaces. The value next to the active substance MUST be a value between [0..1] indicating the concentration within the product.
 
-"product_mix.dilution" is the amount of water added per product mix unit. If unspecified, it is assumed that the product is applied without dilution (no added water).
+"product.dilution" is the amount of water added per product mix unit. If unspecified, it is assumed that the product is applied without dilution (no added water).
 
-"product_mix.unit" MUST be "l" if "dilution" is specified or if any of the products in the mix is liquid.
+"product.unit" MUST be "l" if "dilution" is specified or if any of the products in the mix is liquid.
 
 "amount" refers to the total amount of water-diluted solution (in litre) if "dilution" is specified; otherwise, the total amount of product mix.
 
